@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:include="fragment/head :: head"></div>
+<!-- Start Main Top -->
+<div class="main-top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="text-slid-box">
+                    <div id="offer-box" class="carouselTicker">
+                        <ul class="offer-box">
+                            <li>
+                                <i class="fab fa-opencart"></i> Off 10%! Shop Now Man
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> 50% - 80% off on Fashion
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT20
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> Off 10%! Shop Now Man
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> 50% - 80% off on Fashion
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT20
+                            </li>
+                            <li>
+                                <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+<!--                <div class="custom-select-box">-->
+<!--                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">-->
+<!--                        <option>¥ JPY</option>-->
+<!--                        <option>$ USD</option>-->
+<!--                        <option>€ EUR</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <div class="right-phone-box">-->
+<!--                    <p>Call US :- <a href="#"> 0989999999</a></p>-->
+<!--                </div>-->
+                <div class="our-link">
+                    <ul>
+                        <li sec:authorize="isAnonymous()">
+                            <a href="/login">Login</a>
+                        </li>
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li>
+                                <a href="/" sec:authentication="principal.username"></a>
+                            </li>
+                            <th:block sec:authorize="hasAuthority('ADMIN')">
+                                <li>
+                                    <a href="/categories">Category</a>
+                                </li>
+                                <li>
+                                    <a href="/products/manager">Product</a>
+                                </li>
+                            </th:block>
+                            <li>
+                                <a href="/logout">Logout</a>
+                            </li>
+                        </th:block>
+                        <li><a href="#">Our location</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Main Top -->
+
+<!-- Start Main Top -->
+<header class="main-header">
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav">
+        <div class="container">
+            <!-- Start Header Navigation -->
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu"
+                        aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img src="images/logo.png" class="logo" alt="logo" height="100" width="100">
+                </a>
+            </div>
+            <!-- End Header Navigation -->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
+                    <li class="nav-item active"><a class="nav-link" href="/">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products">Sản phẩm</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">SHOP</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="cart.html">Cart</a></li>
+                            <li><a href="checkout.html">Checkout</a></li>
+                            <li><a href="my-account.html">My Account</a></li>
+                            <li><a href="wishlist.html">Wishlist</a></li>
+                            <li><a href="shop-detail.html">Shop Detail</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="service.html">Our Service</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact-us.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+
+            <!-- Start Atribute Navigation -->
+            <div class="attr-nav">
+                <ul>
+                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li class="side-menu"><a href="#">
+                        <i class="fa fa-shopping-bag"></i>
+                        <span class="badge" th:text="${session.cartItemSize}"></span>
+                    </a></li>
+                </ul>
+            </div>
+            <!-- End Atribute Navigation -->
+        </div>
+        <!-- Start Side Menu -->
+        <div class="side">
+            <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+            <li class="cart-box">
+                <ul class="cart-list">
+                    <li th:if="${session.cartItemSize==0 or session.cartItemSize==null}">
+                        <p>No item</p>
+                    </li>
+                    <li th:each="items : ${session.cartItems}">
+                        <a href="#" class="photo">
+                            <img th:src="${'../'+items.product.image}" class="cart-thumb" alt=""/>
+                        </a>
+                        <h6>
+                            <a href="#" th:text="${items.product.name}"></a>
+                        </h6>
+                        <p th:text="${items.quantity}">
+                            <span class="price" th:text="${items.product.price}"></span>
+                        </p>
+                    </li>
+                    <li class="total">
+                        <a href="/cart" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                        <th:block th:if="${session.totalPrice!=null}">
+                            <span class="float-right" th:text="|Total: ${session.totalPrice}|"></span>
+                        </th:block>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <!-- End Side Menu -->
+    </nav>
+    <!-- End Navigation -->
+</header>
+<!-- End Main Top -->
+
+<!-- Start Top Search -->
+<form action="/products/search" method="post">
+    <div class="top-search">
+        <div class="container">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input name="name" type="text" class="form-control" placeholder="Tìm kiếm tên sản phẩm">
+                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- End Top Search -->
+</body>
+</html>
