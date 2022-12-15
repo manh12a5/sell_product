@@ -1,20 +1,23 @@
 package com.example.demo.service.cart;
 
 import com.example.demo.form.CartForm;
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.cart.CartItem;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Cart;
+import com.example.demo.model.CartItem;
+import com.example.demo.model.Product;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
-import com.example.demo.service.login.IAppUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.Query;
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CartService implements ICartService {
 
     @Autowired
@@ -22,6 +25,8 @@ public class CartService implements ICartService {
 
     @Autowired
     private CartItemRepository cartItemRepository;
+
+    private EntityManager entityManager;
 
     @Override
     public Cart save(Cart cart){
@@ -78,6 +83,17 @@ public class CartService implements ICartService {
         cartItem.setCart(cart);
 
         cartItemRepository.save(cartItem);
+    }
+
+    @Override
+    @Transactional
+    public void removeGuestCart() {
+        List<Cart> carts = cartRepository.findGuestCart();
+
+        for (Cart cart: carts) {
+            cartItemRepository.deleteCartItemByCartId(cart.getId());
+            cartRepository.delete(cart);
+        }
     }
 
 }

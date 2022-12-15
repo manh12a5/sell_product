@@ -1,8 +1,9 @@
 package com.example.demo.service.product;
 
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Product;
+import com.example.demo.model.Warehouse;
 import com.example.demo.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,13 +11,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService implements IProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+    private EntityManager entityManager;
 
     @Override
     public List<Product> findAll() {
@@ -46,6 +52,11 @@ public class ProductService implements IProductService {
     @Override
     public Page<Product> findProductByName(String name, Pageable pageable) {
         return productRepository.findProductByName(name, pageable);
+    }
+
+    @Override
+    public List<Product> findListProductByName(String name) {
+        return productRepository.findListProductByName(name);
     }
 
     @Override

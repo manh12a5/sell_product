@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +15,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     //Tìm kiếm sản phẩm theo tên
     @Query(value = "select * from product where product.name like ?", nativeQuery = true)
     Page<Product> findProductByName(String name, Pageable pageable);
+
+    //Tìm kiếm sản phẩm theo tên
+    @Query(value = "select * from product where product.name like ?", nativeQuery = true)
+    List<Product> findListProductByName(String name);
 
     //Tìm kiếm sản phẩm theo category
     @Query(value = "select * from product where product.category_id = ?", nativeQuery = true)

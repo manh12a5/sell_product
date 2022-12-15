@@ -2,9 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.email.EmailSender;
 import com.example.demo.form.PlaceOrderForm;
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.cart.CartItem;
-import com.example.demo.model.login.AppUser;
+import com.example.demo.model.Cart;
+import com.example.demo.model.CartItem;
+import com.example.demo.model.AppUser;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.cartItem.ICartItemService;
 import com.example.demo.service.login.IAppUserService;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,21 +42,30 @@ public class CheckoutController {
     }
 
     @GetMapping("")
-    public ModelAndView checkout() {
+    public ModelAndView checkout(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("view/checkout");
         AppUser appUser = currentUser();
-        Cart cart = cartService.findCartByAppUserId(appUser.getId());
-        List<CartItem> cartItemList = cartItemService.findCartItemByCartId(cart.getId());
 
-        double totalPrice = 0;
-        for (CartItem cartItem: cartItemList) {
-            totalPrice += (cartItem.getQuantity() * cartItem.getProduct().getPrice());
+        Cart cart;
+        if (appUser != null) {
+            cart = cartService.findCartByAppUserId(appUser.getId());
+        } else {
+            cart = (Cart) session.getAttribute("cartGuest");
         }
 
-        modelAndView.addObject("appUser", appUser);
-        modelAndView.addObject("cart", cart);
-        modelAndView.addObject("cartItems", cartItemList);
-        modelAndView.addObject("totalPrice", totalPrice);
+        if (cart != null) {
+            List<CartItem> cartItemList = cartItemService.findCartItemByCartId(cart.getId());
+
+            double totalPrice = 0;
+            for (CartItem cartItem : cartItemList) {
+                totalPrice += (cartItem.getQuantity() * cartItem.getProduct().getPrice());
+            }
+
+            modelAndView.addObject("appUser", appUser);
+            modelAndView.addObject("cart", cart);
+            modelAndView.addObject("cartItems", cartItemList);
+            modelAndView.addObject("totalPrice", totalPrice);
+        }
         return modelAndView;
     }
 

@@ -1,6 +1,6 @@
 package com.example.demo.service.confirmationToken;
 
-import com.example.demo.model.login.ConfirmationToken;
+import com.example.demo.model.ConfirmationToken;
 import com.example.demo.repository.ConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

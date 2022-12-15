@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.category.Category;
-import com.example.demo.model.login.AppRole;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Category;
+import com.example.demo.model.Product;
 import com.example.demo.service.category.ICategoryService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;

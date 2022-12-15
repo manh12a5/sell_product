@@ -1,25 +1,20 @@
 package com.example.demo.controller;
 
 import com.example.demo.form.CartForm;
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.cart.CartItem;
-import com.example.demo.model.category.Category;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.form.WarehouseForm;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Category;
+import com.example.demo.model.Product;
 import com.example.demo.service.cart.ICartService;
-import com.example.demo.service.cartItem.ICartItemService;
 import com.example.demo.service.category.ICategoryService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;
-import lombok.RequiredArgsConstructor;
+import com.example.demo.service.warehouse.IWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +39,8 @@ public class ProductController {
     private ICartService cartService;
     @Autowired
     private IAppUserService appUserService;
+    @Autowired
+    private IWarehouseService warehouseService;
 
     @ModelAttribute("listCategory")
     private List<Category> listCate() {
@@ -134,15 +131,18 @@ public class ProductController {
     @GetMapping("/view/{id}")
     public ModelAndView viewDetail(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("view/shop-detail");
+        Product product = productService.findById(id);
+        List<WarehouseForm> warehouseForms = warehouseService.findWarehouseByProductId(product.getId());
 
-        modelAndView.addObject("cartForm", new CartForm());
-        modelAndView.addObject("product", productService.findById(id));
+        modelAndView.addObject("product", product);
         modelAndView.addObject("productId", id);
+        modelAndView.addObject("cartForm", new CartForm());
+        modelAndView.addObject("warehouse", warehouseForms);
         return modelAndView;
     }
 
     @PostMapping("/search")
-    public ModelAndView showSearchNameProduct(@RequestParam String name, @PageableDefault(size = 6) Pageable pageable) {
+    public ModelAndView showSearchProduct(@RequestParam String name, @PageableDefault(size = 6) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("fragment/header");
         String nameProduct = "%" + name + "%";
         Page<Product> productList = productService.findProductByName(nameProduct, pageable);
@@ -150,10 +150,19 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("/searchcategory")
+    @PostMapping("/searchName")
+    public ModelAndView showSearchNameProduct(@RequestParam String name, @PageableDefault(size = 6) Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("view/shop");
+        String nameProduct = name + "%";
+        Page<Product> productList = productService.findProductByName(nameProduct, pageable);
+        modelAndView.addObject("products", productList);
+        return modelAndView;
+    }
+
+    @PostMapping("/searchCategory")
     public ModelAndView searchProductByCategory(@RequestParam Long id, @PageableDefault(size = 6) Pageable pageable) {
         Page<Product> productPage = productService.findProductByCategoryName(id, pageable);
-        return new ModelAndView("view/shop", "categories", productPage);
+        return new ModelAndView("view/shop", "products", productPage);
     }
 
     @GetMapping("/sortpricemax")

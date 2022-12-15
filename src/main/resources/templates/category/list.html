@@ -5,22 +5,28 @@
     <title>Provinces</title>
 </head>
 <body>
-<a href="categories/create-cate">Create new category</a>
-<h1>Categories</h1>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Image</th>
-        <th colspan="2"></th>
-    </tr>
-    <th:block th:each="c : ${categories}">
+<div th:include="fragment/header :: body"></div>
+<br/>
+<div style=" margin: auto; width: 60%; border: 3px solid #73AD21; padding: 10px;">
+    <a href="categories/create-cate">Create new category</a>
+    <h1>Categories</h1>
+    <table border="1">
         <tr>
-            <td th:text="${c.name}"></td>
-            <td><img th:src="${'../'+c.image}" width="100"></td>
-            <td><a th:href="@{/categories/edit-cate/__${c.id}__ }">Edit</a></td>
-            <td><a th:href="@{/categories/del-cate/__${c.id}__ }">Delete</a></td>
+            <th>Name</th>
+            <th>Image</th>
+            <th colspan="2"></th>
         </tr>
-    </th:block>
-</table>
+        <th:block th:each="c : ${categories}">
+            <tr>
+                <td th:text="${c.name}"></td>
+                <td><img th:src="${'../'+c.image}" width="100"></td>
+                <td><a th:href="@{/categories/edit-cate/__${c.id}__ }">Edit</a></td>
+                <td><a th:href="@{/categories/del-cate/__${c.id}__ }">Delete</a></td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+<br/>
+<div th:include="fragment/footer :: body"></div>
 </body>
 </html>

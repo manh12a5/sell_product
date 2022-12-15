@@ -23,7 +23,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     private final static String[] URL_PERMIT_ALL = {
             "/", "/categories/**", "/products/**", "/cart/**",
-            "/checkout/**"
+            "/checkout/**", "/ajax/**", "/wishlist/**"
     };
 
     private final static String[] URL_PERMIT_ADMIN = {

@@ -1,13 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.cart.CartItem;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.form.WarehouseForm;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Product;
+import com.example.demo.model.Warehouse;
+import com.example.demo.model.WishList;
+import com.example.demo.model.pk.AppUserWishListPk;
+import com.example.demo.service.appUserWishList.IAppUserWishListService;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.category.ICategoryService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;
+import com.example.demo.service.warehouse.IWarehouseService;
+import com.example.demo.service.wishList.IWishListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +42,15 @@ public class DefautController {
 
     @Autowired
     private ICartService cartService;
+
+    @Autowired
+    private IWishListService wishListService;
+
+    @Autowired
+    private IAppUserWishListService appUserWishListService;
+
+    @Autowired
+    private IWarehouseService warehouseService;
 
     @RequestMapping("")
     public ModelAndView home(@PageableDefault(size = 5) Pageable pageable) {
@@ -71,10 +85,10 @@ public class DefautController {
         return modelAndView;
     }
 
-    @GetMapping("/searchcategory/{id}")
+    @GetMapping("/searchCategory/{id}")
     public ModelAndView showSearchCategory(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("product/search-category");
-        modelAndView.addObject("categories", productService.findById(id));
+        ModelAndView modelAndView = new ModelAndView("view/shop");
+        modelAndView.addObject("products", productService.findById(id));
         return modelAndView;
     }
 
@@ -92,11 +106,6 @@ public class DefautController {
     @RequestMapping("/service")
     public ModelAndView service(){
         return new ModelAndView("/view/service");
-    }
-
-    @RequestMapping("/wishlist")
-    public ModelAndView wishList() {
-        return new ModelAndView("/view/wishlist");
     }
 
 }

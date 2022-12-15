@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.category.Category;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Category;
 import com.example.demo.service.category.CategoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -69,7 +68,7 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("/edit-cate")
+    @PostMapping("/edit-cate/{id}")
     public ModelAndView updateCate(@ModelAttribute("category") Category category) {
         ModelAndView modelAndView = new ModelAndView("/category/edit");
         MultipartFile multipartFile = category.getAvatar();

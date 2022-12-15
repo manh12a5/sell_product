@@ -35,3 +35,8 @@ spring:
       static-locations: file:///${UPLOAD_PATH}, classpath:/static
   main:
     allow-circular-references: true
+
+custom:
+  scheduler:
+    cart:
+      cron: 0 0 * * * ?

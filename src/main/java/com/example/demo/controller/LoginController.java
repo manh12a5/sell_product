@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.login.AppUser;
+import com.example.demo.model.AppUser;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.login.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;

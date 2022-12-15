@@ -20,20 +20,6 @@
 <body>
 <div th:include="fragment/header :: body"></div>
 
-<!-- Start Top Search -->
-<form action="/products/search" method="post">
-    <div class="top-search">
-        <div class="container">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                <input name="name" type="text" class="form-control" placeholder="Tìm kiếm tên sản phẩm">
-                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-            </div>
-        </div>
-    </div>
-</form>
-<!-- End Top Search -->
-
 <!-- Start All Title Box -->
 <div class="all-title-box">
     <div class="container">
@@ -57,8 +43,8 @@
             <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
                 <div class="product-categori">
                     <div class="search-product">
-                        <form action="/products/search" method="post">
-                            <input name="name"c placeholder="Tìm kiếm tên sản phẩm" type="text">
+                        <form action="/products/searchName" method="post">
+                            <input name="name" placeholder="Tìm kiếm tên sản phẩm" type="text">
                             <button type="submit" style="height: 50px"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
@@ -66,7 +52,7 @@
                         <div class="title-left">
                             <h3>Hãng giầy</h3>
                         </div>
-                        <form action="/products/searchcategory" th:method="post">
+                        <form action="/products/searchCategory" th:method="post">
                             <select style="width: 200px; height: 50px" name="id">
                                 <th:block th:each="c:${listCategory}">
                                     <option th:value="${c.id}" th:text="${c.name}"></option>
@@ -184,7 +170,8 @@
                                                 <h4 th:text="${p.name}"></h4>
                                                 <h5 th:text="${p.price}"></h5>
                                                 <p th:text="${p.description}"></p>
-                                                <a class="btn hvr-hover" href="#">Add to Cart</a>
+                                                <a class="btn hvr-hover"
+                                                   th:href="@{/products/view/{id}(id=${p.id})}">View product</a>
                                             </div>
                                         </div>
                                     </div>
@@ -199,93 +186,6 @@
     </div>
 </div>
 <!-- End Shop Page -->
-
-<!-- Start Instagram Feed  -->
-<div class="instagram-box">
-    <div class="main-instagram owl-carousel owl-theme">
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-01.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-02.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-03.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-04.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-05.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-06.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-07.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-08.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-09.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-05.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Instagram Feed  -->
 
 <div th:include="fragment/footer :: body"></div>
 

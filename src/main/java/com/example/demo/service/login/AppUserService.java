@@ -1,10 +1,10 @@
 package com.example.demo.service.login;
 
 import com.example.demo.email.EmailSender;
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.login.AppRole;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.login.ConfirmationToken;
+import com.example.demo.model.Cart;
+import com.example.demo.model.AppRole;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.ConfirmationToken;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.ConfirmationTokenRepository;
@@ -36,14 +36,19 @@ public class AppUserService implements IAppUserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private AppUserRepository appUserRepository;
+
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
+
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
+
     @Autowired
     private EmailSender emailSender;
+
     @Autowired
     private CartRepository cartRepository;
 

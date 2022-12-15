@@ -1,6 +1,6 @@
 package com.example.demo.form;
 
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Product;
 import lombok.Getter;
 import lombok.Setter;
 

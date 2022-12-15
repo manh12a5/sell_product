@@ -37,17 +37,7 @@
 
 <body>
 
-<!-- Start Main Top -->
-<div class="main-top" th:insert="view/index :: main-top"></div>
-<!-- End Main Top -->
-
-<!-- Start Main Top -->
-<header class="main-header" th:insert="view/index :: main-header"></header>
-<!-- End Main Top -->
-
-<!-- Start Top Search -->
-<div class="top-search" th:insert="view/index :: top-search"></div>
-<!-- End Top Search -->
+<div th:include="fragment/header :: body"></div>
 
     <!-- Start All Title Box -->
     <div class="all-title-box">
@@ -213,37 +203,7 @@
     </div>
     <!-- End About Page -->
 
-<!-- Start Instagram Feed  -->
-<div class="instagram-box" th:insert="view/index :: instagram-box"></div>
-<!-- End Instagram Feed  -->
-
-
-<!-- Start Footer  -->
-<footer th:insert="view/index :: footer"></footer>
-<!-- End Footer  -->
-
-<!-- Start copyright  -->
-<div class="footer-copyright" th:insert="view/index :: copyright"></div>
-<!-- End copyright  -->
-
-    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
-
-    <!-- ALL JS FILES -->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- ALL PLUGINS -->
-    <script src="/js/jquery.superslides.min.js"></script>
-    <script src="/js/bootstrap-select.js"></script>
-    <script src="/js/inewsticker.js"></script>
-    <script src="/js/bootsnav.js"></script>
-    <script src="/js/images-loded.min.js"></script>
-    <script src="/js/isotope.min.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/baguetteBox.min.js"></script>
-    <script src="/js/form-validator.min.js"></script>
-    <script src="/js/contact-form-script.js"></script>
-    <script src="/js/custom.js"></script>
+<div th:include="fragment/footer :: body"></div>
 </body>
 
 </html>

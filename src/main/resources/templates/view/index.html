@@ -73,7 +73,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" th:each="c:${categories}">
                 <div class="shop-cat-box">
                     <img th:src="${'../'+c.image}" alt="adidas" width="350" height="350"/>
-                    <a class="btn hvr-hover" th:href="@{/searchcategory/{id}(id=${c.id})}" th:text="${c.name}"></a>
+                    <a class="btn hvr-hover" th:href="@{/searchCategory/{id}(id=${c.id})}" th:text="${c.name}"></a>
                 </div>
             </div>
         </div>
@@ -93,121 +93,41 @@
             </div>
         </div>
 
-        <div class="row special-list">
-            <div class="col-lg-3 col-md-6 special-grid best-seller" th:each="p:${top5products}">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img th:src="${'../'+p.image}" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a th:href="@{/products/view/{id}(id=${p.id})}"
-                                       data-toggle="tooltip" data-placement="right" title="View"><i
-                                        class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i
-                                        class="fas fa-sync-alt"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i
-                                        class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
+        <form>
+            <div class="row special-list">
+                <div class="col-lg-3 col-md-6 special-grid best-seller" th:each="p:${top5products}">
+                    <div class="products-single fix">
+                        <div class="box-img-hover">
+                            <img th:src="${'../'+p.image}" class="img-fluid" alt="Image">
+                            <div class="mask-icon">
+                                <ul>
+                                    <li><a th:href="@{/products/view/{id}(id=${p.id})}"
+                                           data-toggle="tooltip" data-placement="right" title="View"><i
+                                            class="fas fa-eye"></i></a></li>
+                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i
+                                            class="fas fa-sync-alt"></i></a></li>
+                                    <li>
+                                        <a th:href="@{/wishlist/addWishlist/{id}(id=${p.id})}"
+                                           onclick="return alert('Added to wish list')"
+                                           data-toggle="tooltip" data-placement="right"
+                                           title="Add to Wishlist">
+                                            <i class="far fa-heart"></i></a>
+                                    </li>
+                                </ul>
+                                <a class="cart" th:href="@{/products/view/{id}(id=${p.id})}">View Product</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="why-text">
-                        <h4 th:text="${p.name}"></h4>
-                        <h5 th:text="${p.price}"></h5>
+                        <div class="why-text">
+                            <h4 th:text="${p.name}"></h4>
+                            <h5 th:text="${p.price}"></h5>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <!-- End Products  -->
-
-<!-- Start Instagram Feed  -->
-<div class="instagram-box">
-    <div class="main-instagram owl-carousel owl-theme">
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-01.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-02.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-03.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-04.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-05.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-06.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-07.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-08.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-09.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-05.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Instagram Feed  -->
 
 <div th:include="fragment/footer :: body"></div>
 

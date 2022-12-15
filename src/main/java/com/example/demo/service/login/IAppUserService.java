@@ -1,6 +1,6 @@
 package com.example.demo.service.login;
 
-import com.example.demo.model.login.AppUser;
+import com.example.demo.model.AppUser;
 import com.example.demo.service.IService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

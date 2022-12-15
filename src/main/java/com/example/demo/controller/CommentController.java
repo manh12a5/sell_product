@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.comment.Comment;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Comment;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Product;
 import com.example.demo.service.comment.ICommentService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;

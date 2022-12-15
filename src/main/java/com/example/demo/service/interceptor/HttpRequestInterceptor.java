@@ -1,15 +1,14 @@
 package com.example.demo.service.interceptor;
 
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.cart.CartItem;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Cart;
+import com.example.demo.model.CartItem;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Product;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.cartItem.ICartItemService;
 import com.example.demo.service.login.IAppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +33,16 @@ public class HttpRequestInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         AppUser appUser = appUserService.getCurrentUser();
 
+        Cart cart = null;
         if (appUser != null) {
-            Cart cart = cartService.findById(appUser.getId());
+            cart = cartService.findById(appUser.getId());
+        } else {
+            if (session.getAttribute("cartGuest") != null) {
+                cart = (Cart) session.getAttribute("cartGuest");
+            }
+        }
+
+        if (cart != null) {
             List<CartItem> cartItems = cartItemService.findCartItemByCartId(cart.getId());
 
             int size = 0;

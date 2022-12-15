@@ -2,10 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.form.CartForm;
 import com.example.demo.form.CartItemForm;
-import com.example.demo.model.cart.Cart;
-import com.example.demo.model.cart.CartItem;
-import com.example.demo.model.login.AppUser;
-import com.example.demo.model.product.Product;
+import com.example.demo.model.Cart;
+import com.example.demo.model.CartItem;
+import com.example.demo.model.AppUser;
+import com.example.demo.model.Product;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.cartItem.ICartItemService;
 import com.example.demo.service.login.IAppUserService;
@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -39,7 +40,7 @@ public class CartController {
     }
 
     @RequestMapping(value="", method = { RequestMethod.GET, RequestMethod.POST })
-    public ModelAndView showCart(@ModelAttribute CartForm cartForm) {
+    public ModelAndView showCart(@ModelAttribute CartForm cartForm, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("view/cart");
 
         List<CartItemForm> cartItemForms = cartForm.getCartItemFormList();
@@ -54,16 +55,22 @@ public class CartController {
             }
         }
 
-        cartView(modelAndView);
+        cartView(modelAndView, session);
         return modelAndView;
     }
 
-    private void cartView(ModelAndView modelAndView) {
+    private void cartView(ModelAndView modelAndView, HttpSession session) {
         CartForm cartForm = new CartForm();
         double totalPriceCart = 0;
 
+        Cart cart = null;
         if (currentUser() != null) {
-            Cart cart = cartService.findCartByAppUserId(currentUser().getId());
+            cart = cartService.findCartByAppUserId(currentUser().getId());
+        } else {
+            cart = (Cart) session.getAttribute("cartGuest");
+        }
+
+        if (cart != null) {
             List<CartItem> cartItems = cartItemService.findCartItemByCartId(cart.getId());
 
             cartForm.setSize(cartItems.size());
@@ -88,16 +95,28 @@ public class CartController {
     }
 
     @PostMapping("/addToCart")
-    public String addToCart(@ModelAttribute CartForm cartForm, Model model) {
+    public String addToCart(@ModelAttribute CartForm cartForm, Model model, HttpSession session) {
         AppUser appUser = currentUser();
         Product product = productService.findById(cartForm.getProductId());
 
+        Cart cart;
         if (appUser != null) {
-            Cart cart = cartService.findCartByAppUserId(appUser.getId());
-            cartService.addToCart(cartForm, cart, product);
+            cart = cartService.findCartByAppUserId(appUser.getId());
+        } else {
+            if (session.getAttribute("cartGuest") == null) {
+                cart = new Cart();
+                cartService.save(cart);
+                session.setAttribute("cartGuest", cart);
+            } else {
+                cart = (Cart) session.getAttribute("cartGuest");
+            }
         }
 
-        model.addAttribute("addToCart", "Added To Cart");
+        if (cart != null) {
+            cartService.addToCart(cartForm, cart, product);
+            model.addAttribute("addToCart", "Added To Cart");
+        }
+
         return "redirect:/products/view/" + product.getId();
     }
 

@@ -1,6 +1,6 @@
 package com.example.demo.service.cartItem;
 
-import com.example.demo.model.cart.CartItem;
+import com.example.demo.model.CartItem;
 import com.example.demo.service.IService;
 
 import java.util.List;

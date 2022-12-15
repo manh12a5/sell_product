@@ -9,12 +9,13 @@
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Site Metas -->
-    <title>Trang chủ</title>
+    <title>Shop-detail</title>
 
 </head>
 
 <body>
 <div th:include="fragment/header :: body"></div>
+
 <!-- Start All Title Box -->
 <div class="all-title-box">
     <div class="container">
@@ -22,7 +23,7 @@
             <div class="col-lg-12">
                 <h2>Shop Detail</h2>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item"><a href="/">Shop</a></li>
                     <li class="breadcrumb-item active">Shop Detail </li>
                 </ul>
             </div>
@@ -69,15 +70,16 @@
                     <div class="single-product-details">
                         <h2 th:text="${product.name}"></h2>
                         <h5 th:text="${product.price}"></h5>
-                        <p class="available-stock"><span> More than 20 available / <a href="#">8 sold </a></span>
-                        <p>
+                        <th:block th:each="warehouse: ${warehouse}">
+                            <span th:text="|More than ${warehouse.stock} available in warehouse ${warehouse.name}|"></span>
+                        </th:block>
                         <h4>Short Description:</h4>
                         <p th:text="${product.description}"></p>
                         <ul>
                             <li>
                                 <div class="form-group size-st">
                                     <label class="size-label">Size</label>
-                                    <select id="basic1" class="selectpicker show-tick form-control"
+                                    <select id="basic1" class="show-tick form-control"
                                             name="size" th:field="*{size}">
                                         <option value="0">Size</option>
                                         <option value="4">4</option>
@@ -102,9 +104,10 @@
                         </ul>
                         <div class="price-box-bar">
                             <div class="cart-and-bay-btn">
-                                <a class="btn hvr-hover" data-fancybox-close="" href="/cart">Buy New</a>
+                                <button class="btn hvr-hover" data-fancybox-close=""
+                                        style="color: white" onclick="location.href='/cart'">Move to cart</button>
                                 <!--                                        <a class="btn hvr-hover" data-fancybox-close="" th:href="@{#}">Add to cart</a>-->
-                                <button type="submit" name="sb" value="add" class="btcustom">Add to card</button>
+                                <button type="submit" class="btn hvr-hover" style="color: white">Add to card</button>
                             </div>
                         </div>
                         <div class="add-to-btn">
@@ -291,6 +294,7 @@
 <!-- End Cart -->
 
 <div th:include="fragment/footer :: body"></div>
+
 </body>
 
 </html>

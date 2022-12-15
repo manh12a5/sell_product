@@ -17,6 +17,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(requestHandler())
-                .excludePathPatterns("/js/**", "/css/**", "/images/**", "/webjars/**", "/webfonts/**");
+                .excludePathPatterns("/js/**", "/css/**", "/images/**", "/webjars/**", "/webfonts/**",
+                        "https://oss.maxcdn.com/**, /fileImage/**");
     }
 }
