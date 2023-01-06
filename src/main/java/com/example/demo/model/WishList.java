@@ -1,8 +1,6 @@
 package com.example.demo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -10,7 +8,8 @@ import java.util.Collection;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class WishList {
 
     @Id
@@ -20,6 +19,6 @@ public class WishList {
     @OneToOne
     private Product product;
 
-    @OneToMany(mappedBy = "id.wishList", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "appUserWishListId.wishList", fetch = FetchType.LAZY)
     private Collection<AppUserWishList> appUserWishListCollection;
 }

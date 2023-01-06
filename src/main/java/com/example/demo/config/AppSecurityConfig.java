@@ -43,11 +43,14 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .csrf().disable()
-                .authorizeRequests().antMatchers(URL_PERMIT_ALL).permitAll().and()
-                .authorizeRequests().antMatchers(URL_PERMIT_ADMIN).hasRole("ADMIN").and()
-                .authorizeRequests().antMatchers(HttpMethod.POST ,"/products/detail/{id}")
-                .authenticated().and()
+                .authorizeRequests()
+                .antMatchers(URL_PERMIT_ALL).permitAll()
+                .antMatchers(URL_PERMIT_ADMIN).hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST ,"/products/detail/{id}")
+                .authenticated()
+                .and()
                 .formLogin().successHandler(customizeSuccessHandle).loginPage("/login").permitAll().and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).and()
                 .exceptionHandling().accessDeniedPage("/403");

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Controller
@@ -65,11 +66,9 @@ public class CommentController {
     public Comment create(@RequestBody Comment comment){
         AppUser appUser=currentUser();
         Product product=currentProduct();
-        Date date=new Date(System.currentTimeMillis());
         comment.setUser(appUser);
         comment.setProduct(product);
         System.out.println("id"+product);
-        comment.setDate(date);
         return commentService.save(comment);
     }
 
@@ -91,14 +90,14 @@ public class CommentController {
         comment.setId(id);
         AppUser appUser=currentUser();
         Product product=currentProduct();
-        Date date=new Date(System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String a = commentService.findById(id).getUser().getFirstName();
         boolean b = appUser.getFirstName().equals(a);
         if (b){
             comment.setUser(appUser);
             comment.setProduct(product);
             System.out.println(product);
-            comment.setDate(date);
+            comment.setUpdateOn(timestamp);
             commentService.save(comment);
             return new ResponseEntity<>(HttpStatus.OK);
         }else {

@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.AppRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -36,8 +36,11 @@ public class AppUser implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
 
+    @Column(name = "created_on", nullable = true, insertable = false, updatable = false)
+    private Timestamp createOn;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "id.appUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "appUserWishListId.appUser", fetch = FetchType.LAZY)
     private Collection<AppUserWishList> appUserWishListCollection;
 
     //Constructor without ID

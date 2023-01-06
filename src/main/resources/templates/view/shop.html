@@ -58,23 +58,29 @@
                                     <option th:value="${c.id}" th:text="${c.name}"></option>
                                 </th:block>
                             </select>
-                            <button type="submit" style="width: 50px; height: 50px"><i class="fa fa-search"></i></button>
+                            <button type="submit" style="width: 50px; height: 50px"><i class="fa fa-search"></i>
+                            </button>
                         </form>
                     </div>
 
-                    <div class="filter-price-left">
-                        <div class="title-left">
-                            <h3>Price</h3>
+                    <form th:object="${sortFilterForm}" th:action="@{/products/sortFilter}" method="get"
+                          onsubmit="sortFilter()">
+                        <input type="hidden" id="minPrice" name="minPrice" value="1000">
+                        <input type="hidden" id="maxPrice" name="maxPrice" value="3000">
+                        <div class="filter-price-left">
+                            <div class="title-left">
+                                <h3>Price</h3>
+                            </div>
+                            <div class="price-box-slider">
+                                <div id="slider-range"></div>
+                                <p>
+                                    <input type="text" id="amount" readonly
+                                           style="border:0; color:#fbb714; font-weight:bold;">
+                                    <button class="btn hvr-hover" type="submit">Filter</button>
+                                </p>
+                            </div>
                         </div>
-                        <div class="price-box-slider">
-                            <div id="slider-range"></div>
-                            <p>
-                                <input type="text" id="amount" readonly
-                                       style="border:0; color:#fbb714; font-weight:bold;">
-                                <button class="btn hvr-hover" type="submit">Filter</button>
-                            </p>
-                        </div>
-                    </div>
+                    </form>
 
                 </div>
             </div>
@@ -124,11 +130,15 @@
                                                                data-toggle="tooltip" data-placement="right"
                                                                title="View"><i
                                                                 class="fas fa-eye"></i></a></li>
-                                                        <li><a href="#" data-toggle="tooltip" data-placement="right"
-                                                               title="Add to Wishlist"><i class="far fa-heart"></i></a>
+                                                        <li>
+                                                            <a th:href="@{/wistlist/addWishist/p.id}"
+                                                               data-toggle="tooltip" data-placement="right"
+                                                               title="Add to Wishlist"><i class="far fa-heart"></i>
+                                                            </a>
                                                         </li>
                                                     </ul>
-                                                    <a class="cart" href="#">Add to Cart</a>
+                                                    <a class="cart" th:href="@{/products/view/{id}(id=${p.id})}">View
+                                                        Product</a>
                                                 </div>
                                             </div>
                                             <div class="why-text">
@@ -189,6 +199,17 @@
 
 <div th:include="fragment/footer :: body"></div>
 
+<script th:inline="javascript">
+    function sortFilter() {
+        let amount = $("#amount").val();
+
+        let minAmount = (amount.toString().split("-")[0]).replace(/[^0-9]/g, ""); ///before
+        let maxAmount = (amount.toString().split("-")[1]).replace(/[^0-9]/g, ""); ///after
+
+        document.getElementById("minPrice").value = minAmount;
+        document.getElementById("maxPrice").value = maxAmount;
+    }
+</script>
 </body>
 
 </html>

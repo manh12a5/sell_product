@@ -29,5 +29,7 @@ public interface IProductService extends IService<Product> {
 
     Product getCurrentProduct();
 
+    Page<Product> getListProductByFilterPrice(Double minPrice, Double maxPrice, Pageable pageable);
+
 }
 

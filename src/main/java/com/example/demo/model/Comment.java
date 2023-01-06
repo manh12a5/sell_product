@@ -1,13 +1,11 @@
 package com.example.demo.model;
 
-import com.example.demo.model.AppUser;
-import com.example.demo.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -27,6 +25,10 @@ public class Comment {
     @ManyToOne
     private Product product;
 
-    private Date date;
+    @Column(name = "created_on", nullable = true, insertable = false, updatable = false)
+    private Timestamp createOn;
+
+    @Column(name = "updated_on", nullable = true, insertable = false, updatable = false)
+    private Timestamp updateOn;
 
 }

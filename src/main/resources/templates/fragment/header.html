@@ -64,10 +64,7 @@
                             </li>
                             <th:block sec:authorize="hasAuthority('ADMIN')">
                                 <li>
-                                    <a href="/categories">Category</a>
-                                </li>
-                                <li>
-                                    <a href="/products/manager">Product</a>
+                                    <a href="/admin">Manage</a>
                                 </li>
                             </th:block>
                             <li>
@@ -143,14 +140,17 @@
                         <p>No item</p>
                     </li>
                     <li th:each="items : ${session.cartItems}">
-                        <a href="#" class="photo">
-                            <img th:src="${'../'+items.product.image}" class="cart-thumb" alt=""/>
+                        <a th:href="@{/products/view/{id}(id=${items.product.id})}" class="photo" style="height: 70px;">
+                            <img th:src="@{|/${items.product.image}|}" class="cart-thumb" alt=""/>
                         </a>
                         <h6>
-                            <a href="#" th:text="${items.product.name}"></a>
+                            <a href="#" th:text="|Product: ${items.product.name!=null?items.product.name:''}|"></a>
                         </h6>
-                        <p th:text="${items.quantity}">
+                        <p th:text="|Quantity: ${items.quantity!=null?items.quantity:''}|">
                             <span class="price" th:text="${items.product.price}"></span>
+                        </p>
+                        <p th:text="|Size: ${items.size!=null?items.size:''}|">
+                            <span class="price" th:text="${items.size}"></span>
                         </p>
                     </li>
                     <li class="total">

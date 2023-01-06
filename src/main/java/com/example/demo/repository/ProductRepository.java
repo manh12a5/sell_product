@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,5 +38,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     Page<Product> findTop5ByOrderByPriceAsc(Pageable pageable);
 
     Product getProductByName(String product);
+
+    @Query(value = "SELECT * FROM product WHERE price BETWEEN :minPrice AND :maxPrice", nativeQuery = true)
+    Page<Product> getListProductByFilterPrice(@Param("minPrice") Double minPrice,
+                                              @Param("maxPrice") Double maxPrice,
+                                              Pageable pageable);
 
 }

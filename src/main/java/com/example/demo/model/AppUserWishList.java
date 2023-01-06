@@ -16,6 +16,6 @@ import javax.persistence.Table;
 public class AppUserWishList {
 
     @EmbeddedId
-    private AppUserWishListPk id;
+    private AppUserWishListPk appUserWishListId;
 
 }

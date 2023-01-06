@@ -62,8 +62,11 @@ public class AppUserService implements IAppUserService {
     @Override
     public AppUser getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        return appUserRepository.findByEmail(email).orElse(null);
+        if (authentication != null) {
+            String email = authentication.getName();
+            return appUserRepository.findByEmail(email).orElse(null);
+        }
+        return null;
     }
 
     @Override

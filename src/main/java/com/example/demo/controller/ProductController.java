@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.form.CartForm;
+import com.example.demo.form.SortFilterForm;
 import com.example.demo.form.WarehouseForm;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Category;
@@ -176,6 +177,21 @@ public class ProductController {
     public ModelAndView sortPriceMin(@PageableDefault(size = 6) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("view/shop");
         modelAndView.addObject("products", productService.findTop5ByOrderByPriceDesc(pageable));
+        return modelAndView;
+    }
+
+    @GetMapping("/sortFilter")
+    public ModelAndView sortFilter(@ModelAttribute("sortFilterForm") SortFilterForm sortFilterForm,
+                                   @PageableDefault(size = 6) Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("view/shop");
+        Page<Product> products = productService
+                .getListProductByFilterPrice(sortFilterForm.getMinPrice(), sortFilterForm.getMaxPrice(), pageable);
+        List<Category> categories = categoryService.findAll();
+
+        modelAndView.addObject("products", products);
+        modelAndView.addObject("categoriesProduct", categories);
+        modelAndView.addObject("numberOfProducts", products.getTotalElements());
+
         return modelAndView;
     }
 

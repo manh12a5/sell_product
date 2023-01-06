@@ -57,20 +57,27 @@ public class CartService implements ICartService {
     @Transactional
     public void addToCart(CartForm cartForm, Cart cart, Product product) {
         List<CartItem> cartItemList = cartItemRepository.findCartItemByCartId(cart.getId());
+        boolean checkDuplicateCart = false;
 
+        CartItem cartItem = null;
         if (cartItemList.isEmpty()) {
             addNewCartItem(cartForm, cart, product);
         } else {
-            for (CartItem cartItem: cartItemList) {
-                if (cartItem.getProduct().getId().equals(product.getId())
-                        && (cartItem.getSize() == cartForm.getSize())) {
-                    cartItem.setQuantity(cartItem.getQuantity() + cartForm.getQuantity());
-
-                    cartItemRepository.save(cartItem);
-                } else {
-                    addNewCartItem(cartForm, cart, product);
+            for (CartItem cartItemForm: cartItemList) {
+                if (cartItemForm.getProduct().getId().equals(product.getId())
+                        && (cartItemForm.getSize() == cartForm.getSize())) {
+                    checkDuplicateCart = true;
+                    cartItem = cartItemForm;
+                    break;
                 }
             }
+        }
+
+        if (checkDuplicateCart) {
+            cartItem.setQuantity(cartItem.getQuantity() + cartForm.getQuantity());
+            cartItemRepository.save(cartItem);
+        } else {
+            addNewCartItem(cartForm, cart, product);
         }
 
     }

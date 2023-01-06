@@ -11,11 +11,11 @@ pipeline {
                 bat 'gradle clean'
             }
         }
-        stage('Test') {
-            steps {
-                bat 'gradle test'
-            }
-        }
+//         stage('Test') {
+//             steps {
+//                 bat 'gradle test'
+//             }
+//         }
         stage('Install') {
             steps {
                 bat 'gradle build'

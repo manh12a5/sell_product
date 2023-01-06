@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -17,7 +18,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date date;
+    @Column(name = "created_on", nullable = true, insertable = false, updatable = false)
+    private Timestamp createOn;
 
     @OneToOne
     private AppUser appUser;

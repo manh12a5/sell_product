@@ -1,7 +1,6 @@
 package com.example.demo.service.product;
 
 import com.example.demo.model.Product;
-import com.example.demo.model.Warehouse;
 import com.example.demo.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class ProductService implements IProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
@@ -86,10 +88,14 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getCurrentProduct() {
-        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String product = authentication.getName();
-        Product product1= productRepository.getProductByName(product);
-        return product1;
+        return productRepository.getProductByName(product);
+    }
+
+    @Override
+    public Page<Product> getListProductByFilterPrice(Double minPrice, Double maxPrice, Pageable pageable) {
+        return productRepository.getListProductByFilterPrice(minPrice, maxPrice, pageable);
     }
 
 }

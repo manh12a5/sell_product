@@ -48,7 +48,7 @@ public class WishListService implements IWishListService {
 
     @Override
     public void remove(Long id) {
-        wishListRepository.deleteById(id);
+        wishListRepository.deleteWishListById(id);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class WishListService implements IWishListService {
             appUserWishListPk.setWishList(wishList);
             appUserWishListPk.setAppUser(appUser);
 
-            appUserWishList.setId(appUserWishListPk);
+            appUserWishList.setAppUserWishListId(appUserWishListPk);
             appUserWishListService.save(appUserWishList);
         }
 
