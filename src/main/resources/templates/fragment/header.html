@@ -94,7 +94,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="/">
-                    <img src="images/logo.png" class="logo" alt="logo" height="100" width="100">
+                    <img src="/images/logo.png" class="logo" alt="logo" height="100" width="100">
                 </a>
             </div>
             <!-- End Header Navigation -->
@@ -213,10 +213,10 @@
             return $("<li></li>")
                 .html("<div>" +
                     "<img width='30' height='30' style='float: left; margin: 0 15px 0 0;' "
-                        + "src='../" + item.image + " '/>"
+                    + "src='../" + item.image + " '/>"
                     + "<a href='/products/view/" + item.id + "'>" + item.name + " -- " + item.price
-                        + " -- " + item.category.name + " -- " + item.itemDescription + "</a>"
-                + "</div>")
+                    + " -- " + item.category.name + " -- " + item.itemDescription + "</a>"
+                    + "</div>")
                 .appendTo(ul);
         };
     }

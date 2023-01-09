@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <!-- Basic -->
 
 <head>
@@ -293,8 +293,195 @@
 </div>
 <!-- End Cart -->
 
+<section class="content-item" id="comments">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div sec:authorize="isAuthenticated()">
+                    <input type="submit" class="btn btn-normal pull-right" value="Add comment" onclick="saveComment();">
+                </div>
+                <form sec:authorize="isAuthenticated()">
+                    <h3 class="pull-left">New Comment</h3>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-sm-3 col-lg-2 hidden-xs">
+                                <img width="100px;"
+                                     class="img-responsive" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                <textarea class="form-control" id="message" name="message"
+                                          placeholder="Your message" required="" value=""></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <h3>Comments</h3>
+
+                <div id="allComments" th:each="comment: ${comments}">
+                <div th:id="|comment${comment.id}|" class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" th:src="|https://bootdey.com/img/Content/avatar/avatar${comment.user.id}.png|" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading"
+                                  th:utext="|${comment.user.firstName} ${comment.user.lastName}|"></h4>
+                        <p th:id="|textComment${comment.id}|" th:utext="${comment.comment}"></p>
+                        <div th:id="|editComment${comment.id}|" class="form-group col-xs-12 col-sm-9 col-lg-10" style="display: none;">
+                            <input type="text" th:id="|inputEditComment${comment.id}|" class="form-control" value="">
+                            <input type="button" class="btn btn-cyan btn-sm" value="Submit"
+                                   th:onclick="|editComment(${comment.id});|">
+                        </div>
+                        <ul class="list-unstyled list-inline media-detail pull-left">
+                            <li>
+                                <i class="fa fa-calendar"></i>
+                                <span th:id="|dateComment${comment.id}|"
+                                        th:utext="|${#dates.format(comment.updatedOn, 'dd-MM-yyyy HH:mm')}|"></span>
+                            </li>
+<!--                            <li><i class="fa fa-thumbs-up"></i></li>-->
+                        </ul>
+                        <ul th:if="${#authentication.getName() == comment.user.email}"
+                            class="list-unstyled list-inline media-detail pull-right">
+                            <li class="">
+                                <input type="button" class="btn btn-link btn-sm"
+                                       th:onclick="|showEditComment(${comment.id});|" value="Edit">
+                            </li>
+                            <li class="">
+                                <input type="button" class="btn btn-link btn-sm"
+                                       th:onclick="|deleteComment(${comment.id});|" value="Delete">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
 <div th:include="fragment/footer :: body"></div>
 
 </body>
+
+<script th:inline="javascript" type="text/javascript">
+    function saveComment() {
+        let message = $("#message").val();
+        let productId = $("#productId").val();
+
+        let json = {
+            "comment": message,
+            "productId": productId,
+        };
+
+        if (message != "") {
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type : "POST",
+                url : "/ajax/createComment",
+                data : JSON.stringify(json),
+                dataType: "json",
+                success : function(response) {
+                    let updatedOn = new Date(response.updatedOn);
+                    let dateFormat = moment(updatedOn).format('DD.MM.YY HH:mm');
+
+                    let newMessage = "";
+                    newMessage += "<div class=\"media\">"
+                        + "<a class=\"pull-left\" href=\"#\">"
+                        + "<img class=\"media-object\" src=\"https://bootdey.com/img/Content/avatar/avatar3.png\" alt=\"\">"
+                        + "</a>";
+                    newMessage += "<div class=\"media-body\">";
+                    newMessage += "<h4 className=\"media-heading\">"
+                        + response.user.firstName + " " + response.user.lastName
+                        + "</h4>";
+                    newMessage += "<p>"
+                        + response.comment
+                        + "</p>";
+                    newMessage += "<ul className=\"list-unstyled list-inline media-detail pull-left\">"
+                        + "<li><i className=\"fa fa-calendar\"></i>"
+                        + dateFormat
+                        + "</li></ul>";
+                    newMessage += "</div>";
+                    newMessage += "</div>";
+
+                    $("#allComments").prepend(newMessage);
+                    $("#message").val('')
+                },
+                error: function(error) {
+                    console.log("Error: " + error);
+                },
+            });
+        }
+    }
+
+    function showEditComment(id) {
+        let comment = document.getElementById("editComment" + id);
+        if (comment.style.display === "none") {
+            document.getElementById("editComment" + id).style.display = "block";
+        } else {
+            document.getElementById("editComment" + id).style.display = "none";
+        }
+    }
+
+    function editComment(id) {
+        let comment = $("#inputEditComment" + id).val();
+
+        let json = {
+            "commentId": id,
+            "comment": comment
+        };
+
+        if (comment != "") {
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type : "POST",
+                url : "/ajax/editComment",
+                data : JSON.stringify(json),
+                dataType: "json",
+                success : function(response) {
+                    $("#inputEditComment" + id).val('');
+                    document.getElementById("editComment" + id).style.display = "none";
+
+                    let updatedOn = new Date(response.updatedOn);
+                    let dateFormat = moment(updatedOn).format('DD.MM.YY HH:mm');
+                    $("#dateComment" + id).text(dateFormat);
+                    document.getElementById("textComment" + id).innerText = response.comment;
+                },
+                error: function(error) {
+                    console.log("Error: " + error);
+                },
+            });
+        }
+    }
+
+    function deleteComment(id) {
+        if (confirm("Are you sure to delete this comment?")) {
+            $.ajax({
+                url: "/ajax/deleteComment",
+                data: {
+                    commentId: id
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response) {
+                        document.getElementById("comment" + id).remove();
+                        alert("Deleted comment");
+                    } else {
+                        alert("Error delete comment")
+                    }
+                },
+                error: function (error) {
+                    console.log("Error: " + error);
+                },
+            });
+        }
+    }
+</script>
 
 </html>

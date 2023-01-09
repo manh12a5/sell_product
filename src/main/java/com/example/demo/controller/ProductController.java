@@ -5,9 +5,11 @@ import com.example.demo.form.SortFilterForm;
 import com.example.demo.form.WarehouseForm;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Category;
+import com.example.demo.model.Comment;
 import com.example.demo.model.Product;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.category.ICategoryService;
+import com.example.demo.service.comment.ICommentService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;
 import com.example.demo.service.warehouse.IWarehouseService;
@@ -42,6 +44,8 @@ public class ProductController {
     private IAppUserService appUserService;
     @Autowired
     private IWarehouseService warehouseService;
+    @Autowired
+    private ICommentService commentService;
 
     @ModelAttribute("listCategory")
     private List<Category> listCate() {
@@ -133,10 +137,12 @@ public class ProductController {
     public ModelAndView viewDetail(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("view/shop-detail");
         Product product = productService.findById(id);
+        List<Comment> comments = commentService.getAllCommentByProductIdDESC(product.getId());
         List<WarehouseForm> warehouseForms = warehouseService.findWarehouseByProductId(product.getId());
 
         modelAndView.addObject("product", product);
         modelAndView.addObject("productId", id);
+        modelAndView.addObject("comments", comments);
         modelAndView.addObject("cartForm", new CartForm());
         modelAndView.addObject("warehouse", warehouseForms);
         return modelAndView;

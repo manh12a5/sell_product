@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
+
     @Autowired
     IProductService productService;
 
@@ -39,17 +39,10 @@ public class CommentController {
         return productService.getCurrentProduct();
     }
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Iterable<Comment> allComment() {
-        return commentService.findAll();
-    }
-
-    @GetMapping("")
-    public ModelAndView list() {
+    @GetMapping("/{productId}")
+    public ModelAndView getAllListCommentByProduct(@PathVariable Long productId) {
         ModelAndView modelAndView = new ModelAndView("comment/list");
-
-        modelAndView.addObject("allComment", allComment());
+        modelAndView.addObject("allComment", commentService.getAllCommentByProductIdDESC(productId));
         return modelAndView;
     }
 
@@ -60,7 +53,7 @@ public class CommentController {
         return mav;
     }
 
-    @PostMapping(value = "/createNewC",
+    @PostMapping(value = "/createComment",
             produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Comment create(@RequestBody Comment comment){
@@ -97,7 +90,7 @@ public class CommentController {
             comment.setUser(appUser);
             comment.setProduct(product);
             System.out.println(product);
-            comment.setUpdateOn(timestamp);
+            comment.setUpdatedOn(timestamp);
             commentService.save(comment);
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
