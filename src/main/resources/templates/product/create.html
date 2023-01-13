@@ -64,8 +64,16 @@
         <input type="text" th:field="*{description}" class="form-control" placeholder="Description">
     </div>
     <div class="mb-3">
-        <label for="formFile" class="form-label">Image</label>
-        <input type="file" th:field="*{avatar}" class="form-control" id="formFile">
+        <label for="mainPicture" class="form-label">Main picture</label>
+        <input type="file" th:field="*{mainPicture}" class="form-control" id="mainPicture">
+    </div>
+    <div class="mb-3">
+        <label for="picture1" class="form-label">Picture 1</label>
+        <input type="file" th:field="*{picture1}" class="form-control" id="picture1">
+    </div>
+    <div class="mb-3">
+        <label for="picture2" class="form-label">Picture 2</label>
+        <input type="file" th:field="*{picture2}" class="form-control" id="picture2">
     </div>
     <div>
         <label>Category</label>

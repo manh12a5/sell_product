@@ -3,9 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Category;
 import com.example.demo.model.Product;
+import com.example.demo.model.Warehouse;
 import com.example.demo.service.category.ICategoryService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;
+import com.example.demo.service.warehouse.IWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -36,6 +38,9 @@ public class  AdminController {
     IProductService productService;
 
     @Autowired
+    IWarehouseService warehouseService;
+
+    @Autowired
     Environment environment;
 
     @GetMapping("")
@@ -46,19 +51,25 @@ public class  AdminController {
 
     @GetMapping("/product")
     public String adminProductPage(Model model) {
+        List<Product> products = productService.findAll();
 
+        model.addAttribute("products", products);
         return "admin/product";
     }
 
     @GetMapping("/category")
     public String adminCategoryPage(Model model) {
+        List<Category> categories = categoryService.findAll();
 
+        model.addAttribute("categories", categories);
         return "admin/category";
     }
 
     @GetMapping("/warehouse")
     public String adminWarehousePage(Model model) {
+        List<Warehouse> warehouses = warehouseService.findAll();
 
+        model.addAttribute("warehouses", warehouses);
         return "admin/warehouse";
     }
 

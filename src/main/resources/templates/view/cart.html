@@ -97,10 +97,11 @@
             <div class="col-lg-6 col-sm-6">
                 <div class="coupon-box">
                     <div class="input-group input-group-sm">
-                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text">
-                        <div class="input-group-append">
-                            <button class="btn btn-theme" type="button">Apply Coupon</button>
-                        </div>
+                        <input id="searchCoupon" onkeydown="callCoupon();"
+                               class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text">
+<!--                        <div class="input-group-append">-->
+<!--                            <button class="btn btn-theme" type="button">Apply Coupon</button>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -118,20 +119,20 @@
                     <h3>Order summary</h3>
                     <div class="d-flex">
                         <h4>Sub Total</h4>
-                        <div class="ml-auto font-weight-bold"> $ 130 </div>
+                        <div class="ml-auto font-weight-bold" th:text="${cartForm.totalPrice}"></div>
                     </div>
                     <div class="d-flex">
                         <h4>Discount</h4>
-                        <div class="ml-auto font-weight-bold"> $ 40 </div>
+                        <div class="ml-auto font-weight-bold"> $ 0 </div>
                     </div>
                     <hr class="my-1">
                     <div class="d-flex">
                         <h4>Coupon Discount</h4>
-                        <div class="ml-auto font-weight-bold"> $ 10 </div>
+                        <div id="couponDiscount" class="ml-auto font-weight-bold"> $ 10 </div>
                     </div>
                     <div class="d-flex">
                         <h4>Tax</h4>
-                        <div class="ml-auto font-weight-bold"> $ 2 </div>
+                        <div class="ml-auto font-weight-bold"> $ 0 </div>
                     </div>
                     <div class="d-flex">
                         <h4>Shipping Cost</h4>
@@ -140,7 +141,7 @@
                     <hr>
                     <div class="d-flex gr-total">
                         <h5>Grand Total</h5>
-                        <div class="ml-auto h5" th:text="${cartForm.totalPrice}"> $ 388 </div>
+                        <div id="totalPrice" class="ml-auto h5" th:text="${cartForm.totalPrice}"></div>
                     </div>
                     <hr> </div>
             </div>
@@ -157,5 +158,50 @@
 <div th:include="fragment/footer :: body"></div>
 
 </body>
+
+<script>
+    function callCoupon() {
+        $("#searchCoupon").autocomplete({
+            source: function (request, response) {
+                let code = $("#searchCoupon").val();
+                $.ajax({
+                    url: "ajax/findCoupon",
+                    dataType: "json",
+                    data: {
+                        codeCoupon: code
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $(this).val("");
+                $(this).val(ui.item.code);
+                $("#couponDiscount").html("$ " + ui.item.discount);
+
+                let discount = parseInt(ui.item.discount);
+                let totalPrice = parseInt($("#totalPrice").html());
+
+                let grandPrice;
+                if (totalPrice > discount) {
+                    grandPrice = totalPrice - discount;
+                    $("#totalPrice").html("$ " + grandPrice);
+                } else {
+                    $("#totalPrice").html("$ 0");
+                }
+
+                event.preventDefault();
+            },
+            change: function (event, ui) {
+                if (!ui.item || !ui.item.id) {
+                    $(this).val("");
+                }
+            }
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li></li>").html("<div>" + "Coupon code: " + item.code + " - Discount: " + item.discount + "</div>").appendTo(ul);
+        };
+    }
+</script>
 
 </html>

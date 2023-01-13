@@ -18,13 +18,18 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private double price;
-    private String image;
+
+    private Double price;
+
+    @OneToOne
+    private Picture picture;
+
     private Date date;
+
     private String description;
-    @Transient
-    private MultipartFile avatar;
+
     @ManyToOne
     private Category category;
 

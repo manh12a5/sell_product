@@ -1,11 +1,8 @@
 package com.example.demo.model;
 
-
-import com.example.demo.model.AppUser;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -23,5 +20,8 @@ public class Cart {
 
     @OneToOne
     private AppUser appUser;
+
+    @OneToOne
+    private Shipment shipment;
 
 }

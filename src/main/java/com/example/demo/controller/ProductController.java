@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.form.CartForm;
+import com.example.demo.form.ProductForm;
 import com.example.demo.form.SortFilterForm;
 import com.example.demo.form.WarehouseForm;
 import com.example.demo.model.AppUser;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -36,8 +38,6 @@ public class ProductController {
     private IProductService productService;
     @Autowired
     private ICategoryService categoryService;
-    @Autowired
-    private Environment environment;
     @Autowired
     private ICartService cartService;
     @Autowired
@@ -54,20 +54,6 @@ public class ProductController {
 
     private AppUser currentUser() {
         return appUserService.getCurrentUser();
-    }
-
-    //Upload File
-    private void uploadFile(@ModelAttribute("product") Product product) {
-        MultipartFile multipartFile = product.getAvatar();
-        String fileName = multipartFile.getOriginalFilename();
-        String fileUpload = environment.getProperty("upload.path");
-        String newFile = fileUpload + fileName;
-        try {
-            FileCopyUtils.copy(multipartFile.getBytes(), new File(newFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        product.setImage(fileName);
     }
 
     //Show All
@@ -94,15 +80,15 @@ public class ProductController {
     @GetMapping("/create")
     private ModelAndView showCreate() {
         ModelAndView modelAndView = new ModelAndView("product/create");
-        modelAndView.addObject("product", new Product());
+        modelAndView.addObject("product", new ProductForm());
         return modelAndView;
     }
 
     @PostMapping("/create")
-    private ModelAndView create(@ModelAttribute("product") Product product) {
+    private ModelAndView create(@ModelAttribute("product") ProductForm productForm) {
         ModelAndView modelAndView = new ModelAndView("product/create");
-        uploadFile(product);
-        productService.save(product);
+        Product product = productService.createProduct(productForm);
+
         modelAndView.addObject("product", product);
         modelAndView.addObject("message", "Tao moi thanh cong");
         return modelAndView;
@@ -112,16 +98,19 @@ public class ProductController {
     private ModelAndView showEdit(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("product/edit");
         Product product = productService.findById(id);
-        modelAndView.addObject("product", product);
+        ProductForm productForm = productService.createProductForm(product);
+
+        modelAndView.addObject("product", productForm);
         return modelAndView;
     }
 
     @PostMapping("/edit/{id}")
-    private ModelAndView edit(@ModelAttribute("product") Product product) {
+    private ModelAndView edit(@ModelAttribute("product") ProductForm productForm) {
         ModelAndView modelAndView = new ModelAndView("product/edit");
-        uploadFile(product);
-        productService.save(product);
-        modelAndView.addObject("product", product);
+        Product product = productService.createProduct(productForm);
+        ProductForm productF = productService.createProductForm(product);
+
+        modelAndView.addObject("product", productF);
         modelAndView.addObject("message", "Sua thanh cong");
         return modelAndView;
     }
@@ -172,17 +161,30 @@ public class ProductController {
         return new ModelAndView("view/shop", "products", productPage);
     }
 
-    @GetMapping("/sortpricemax")
-    public ModelAndView sortPriceMax(@PageableDefault(size = 6) Pageable pageable) {
+    @GetMapping("/sortProduct")
+    public ModelAndView sortPriceMax(@RequestParam String typeSort, @PageableDefault(size = 6) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("view/shop");
-        modelAndView.addObject("products", productService.findAllByOrderByPriceDesc(pageable));
-        return modelAndView;
-    }
+        Page<Product> products = null;
+        switch (typeSort) {
+            case "1":
+                products = productService.findAllByOrderByNameAsc(pageable);
+                break;
+            case "2":
+                products = productService.findAllByOrderByNameDesc(pageable);
+                break;
+            case "3":
+                products = productService.findAllByOrderByPriceDesc(pageable);
+                break;
+            case "4":
+                products = productService.findAllByOrderByPriceAsc(pageable);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + typeSort);
+        }
 
-    @GetMapping("/sortpricemin")
-    public ModelAndView sortPriceMin(@PageableDefault(size = 6) Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("view/shop");
-        modelAndView.addObject("products", productService.findTop5ByOrderByPriceDesc(pageable));
+        modelAndView.addObject("products", products);
+        modelAndView.addObject("typeSort", typeSort);
+        modelAndView.addObject("numberOfProducts", products.getTotalElements());
         return modelAndView;
     }
 

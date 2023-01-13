@@ -63,7 +63,7 @@ public class CartController {
         CartForm cartForm = new CartForm();
         double totalPriceCart = 0;
 
-        Cart cart = null;
+        Cart cart;
         if (currentUser() != null) {
             cart = cartService.findCartByAppUserId(currentUser().getId());
         } else {

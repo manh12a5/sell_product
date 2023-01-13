@@ -31,6 +31,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     //Sắp xếp
     Page<Product> findAllByOrderByPriceDesc(Pageable pageable);
 
+    Page<Product> findAllByOrderByNameAsc(Pageable pageable);
+
+    Page<Product> findAllByOrderByNameDesc(Pageable pageable);
+
     //Top5 price max
     Page<Product> findTop5ByOrderByPriceDesc(Pageable pageable);
 
