@@ -52,7 +52,7 @@ public class HttpRequestInterceptor extends HandlerInterceptorAdapter {
 
                 for (CartItem cartItem : cartItems) {
                     Product product = cartItem.getProduct();
-                    totalPrice += product.getPrice();
+                    totalPrice += (product.getPrice() * cartItem.getQuantity());
                 }
             }
 

@@ -32,7 +32,7 @@ public class EmailService implements EmailSender {
 
     @Override
     @Async
-    public void send(String to, Map<String, Object> templateAttributes, String templateForm) {
+    public void send(String to, Map<String, Object> templateAttributes, String templateForm, String subject) {
         try {
             Context context = prepareEvaluationContext(templateAttributes);
             String htmlBodyContent = templateEngine.process(templateForm, context);
@@ -40,7 +40,7 @@ public class EmailService implements EmailSender {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, ENCODING);
 
             mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject("Confirm your email");
+            mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setFrom(fromEmail);
 
             Multipart multipart = new MimeMultipart();

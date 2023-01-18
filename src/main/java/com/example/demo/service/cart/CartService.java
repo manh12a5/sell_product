@@ -8,11 +8,9 @@ import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.Query;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -68,18 +66,17 @@ public class CartService implements ICartService {
                         && (cartItemForm.getSize() == cartForm.getSize())) {
                     checkDuplicateCart = true;
                     cartItem = cartItemForm;
-                    break;
+                } else {
+                    addNewCartItem(cartForm, cart, product);
                 }
+                break;
             }
         }
 
         if (checkDuplicateCart) {
             cartItem.setQuantity(cartItem.getQuantity() + cartForm.getQuantity());
             cartItemRepository.save(cartItem);
-        } else {
-            addNewCartItem(cartForm, cart, product);
         }
-
     }
 
     private void addNewCartItem(CartForm cartForm, Cart cart, Product product) {
@@ -101,6 +98,11 @@ public class CartService implements ICartService {
             cartItemRepository.deleteCartItemByCartId(cart.getId());
             cartRepository.delete(cart);
         }
+    }
+
+    @Override
+    public Cart findCartByEmailOfAppUser(String email) {
+        return cartRepository.findCartByEmailOfAppUser(email.trim());
     }
 
 }

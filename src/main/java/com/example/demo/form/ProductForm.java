@@ -1,13 +1,17 @@
 package com.example.demo.form;
 
 import com.example.demo.model.Category;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductForm {
 
-    private Long id;
+    private Long productId;
 
     private String name;
     private Double price;

@@ -1,9 +1,9 @@
 package com.example.demo.service.login;
 
 import com.example.demo.email.EmailSender;
-import com.example.demo.model.Cart;
 import com.example.demo.model.AppRole;
 import com.example.demo.model.AppUser;
+import com.example.demo.model.Cart;
 import com.example.demo.model.ConfirmationToken;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.repository.CartRepository;
@@ -175,7 +175,8 @@ public class AppUserService implements IAppUserService {
         templateAttributes.put("name", appUser.getLastName());
         templateAttributes.put("url", url);
 
-        emailSender.send(appUser.getEmail(), templateAttributes, "email/confirmRegistration");
+        emailSender.send(appUser.getEmail(), templateAttributes,
+                "email/confirmRegistration", "Confirm your email");
 
         log.info("Confirmation Token is: {}", token);
         return "Saved user";

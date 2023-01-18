@@ -43,7 +43,10 @@ public class PictureService implements IPictureService {
 
     @Override
     public Picture createPicture(List<MultipartFile> multipartFileList, Long pictureId) {
-        Picture picture = this.findById(pictureId);
+        Picture picture = null;
+        if (pictureId != null) {
+            picture = this.findById(pictureId);
+        }
         if (picture == null) {
             picture = new Picture();
         }

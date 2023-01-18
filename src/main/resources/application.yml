@@ -40,3 +40,8 @@ custom:
   scheduler:
     cart:
       cron: 0 0 * * * ?
+
+payment:
+  client:
+    id: ${CLIENT_ID}
+    secret: ${CLIENT_SECRET}

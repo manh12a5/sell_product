@@ -88,8 +88,9 @@ public class ProductController {
     private ModelAndView create(@ModelAttribute("product") ProductForm productForm) {
         ModelAndView modelAndView = new ModelAndView("product/create");
         Product product = productService.createProduct(productForm);
+        productService.save(product);
 
-        modelAndView.addObject("product", product);
+        modelAndView.addObject("product", new ProductForm());
         modelAndView.addObject("message", "Tao moi thanh cong");
         return modelAndView;
     }
@@ -104,10 +105,12 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/edit")
     private ModelAndView edit(@ModelAttribute("product") ProductForm productForm) {
         ModelAndView modelAndView = new ModelAndView("product/edit");
         Product product = productService.createProduct(productForm);
+        productService.save(product);
+
         ProductForm productF = productService.createProductForm(product);
 
         modelAndView.addObject("product", productF);

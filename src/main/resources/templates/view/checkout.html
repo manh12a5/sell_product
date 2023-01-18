@@ -158,78 +158,78 @@
                         <!--                                </div>-->
                         <!--                            </div>-->
                         <hr class="mb-4">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="same-address">
-                            <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="save-info">
-                            <label class="custom-control-label" for="save-info">Save this information for next
-                                time</label>
-                        </div>
-                        <hr class="mb-4">
+<!--                        <div class="custom-control custom-checkbox">-->
+<!--                            <input type="checkbox" class="custom-control-input" id="same-address">-->
+<!--                            <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>-->
+<!--                        </div>-->
+<!--                        <div class="custom-control custom-checkbox">-->
+<!--                            <input type="checkbox" class="custom-control-input" id="save-info">-->
+<!--                            <label class="custom-control-label" for="save-info">Save this information for next-->
+<!--                                time</label>-->
+<!--                        </div>-->
+<!--                        <hr class="mb-4">-->
                         <div class="title">
                             <span>Payment</span></div>
                         <div class="d-block my-3">
                             <div class="custom-control custom-radio">
                                 <input id="payAfter" name="paymentMethod" type="radio" class="custom-control-input"
-                                       value="0" onclick="showPayment(this)" checked required>
+                                       value="0" checked required>
                                 <label class="custom-control-label" for="payAfter">Pay after receive product</label>
                             </div>
-                            <div class="custom-control custom-radio">
-                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"
-                                       value="1" onclick="showPayment(this)" required>
-                                <label class="custom-control-label" for="credit">Credit card</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input"
-                                       value="2" onclick="showPayment(this)" required>
-                                <label class="custom-control-label" for="debit">Debit card</label>
-                            </div>
+<!--                            <div class="custom-control custom-radio">-->
+<!--                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"-->
+<!--                                       value="1" onclick="showPayment(this)" required>-->
+<!--                                <label class="custom-control-label" for="credit">Credit card</label>-->
+<!--                            </div>-->
+<!--                            <div class="custom-control custom-radio">-->
+<!--                                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input"-->
+<!--                                       value="2" onclick="showPayment(this)" required>-->
+<!--                                <label class="custom-control-label" for="debit">Debit card</label>-->
+<!--                            </div>-->
                             <div class="custom-control custom-radio">
                                 <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input"
-                                       value="3" onclick="showPayment(this)" required>
+                                       value="3" required>
                                 <label class="custom-control-label" for="paypal">Paypal</label>
                             </div>
                         </div>
-                        <div id="informationPayment" style="display: none">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="cc-name">Name on card</label>
-                                    <input type="text" class="form-control" id="cc-name" placeholder="">
-                                    <small class="text-muted">Full name as displayed on card</small>
-                                    <div class="invalid-feedback"> Name on card is required</div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="cc-number">Credit card number</label>
-                                    <input type="text" class="form-control" id="cc-number" placeholder="">
-                                    <div class="invalid-feedback"> Credit card number is required</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 mb-3">
-                                    <label for="cc-expiration">Expiration</label>
-                                    <input type="text" class="form-control" id="cc-expiration" placeholder="">
-                                    <div class="invalid-feedback"> Expiration date required</div>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="cc-expiration">CVV</label>
-                                    <input type="text" class="form-control" id="cc-cvv" placeholder="">
-                                    <div class="invalid-feedback"> Security code required</div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <div class="payment-icon">
-                                        <ul>
-                                            <li><img class="img-fluid" src="images/payment-icon/1.png" alt=""></li>
-                                            <li><img class="img-fluid" src="images/payment-icon/2.png" alt=""></li>
-                                            <li><img class="img-fluid" src="images/payment-icon/3.png" alt=""></li>
-                                            <li><img class="img-fluid" src="images/payment-icon/5.png" alt=""></li>
-                                            <li><img class="img-fluid" src="images/payment-icon/7.png" alt=""></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div id="informationPayment" style="display: none">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-6 mb-3">-->
+<!--                                    <label for="cc-name">Name on card</label>-->
+<!--                                    <input type="text" class="form-control" id="cc-name" placeholder="">-->
+<!--                                    <small class="text-muted">Full name as displayed on card</small>-->
+<!--                                    <div class="invalid-feedback"> Name on card is required</div>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6 mb-3">-->
+<!--                                    <label for="cc-number">Credit card number</label>-->
+<!--                                    <input type="text" class="form-control" id="cc-number" placeholder="">-->
+<!--                                    <div class="invalid-feedback"> Credit card number is required</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-3 mb-3">-->
+<!--                                    <label for="cc-expiration">Expiration</label>-->
+<!--                                    <input type="text" class="form-control" id="cc-expiration" placeholder="">-->
+<!--                                    <div class="invalid-feedback"> Expiration date required</div>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-3 mb-3">-->
+<!--                                    <label for="cc-expiration">CVV</label>-->
+<!--                                    <input type="text" class="form-control" id="cc-cvv" placeholder="">-->
+<!--                                    <div class="invalid-feedback"> Security code required</div>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6 mb-3">-->
+<!--                                    <div class="payment-icon">-->
+<!--                                        <ul>-->
+<!--                                            <li><img class="img-fluid" src="images/payment-icon/1.png" alt=""></li>-->
+<!--                                            <li><img class="img-fluid" src="images/payment-icon/2.png" alt=""></li>-->
+<!--                                            <li><img class="img-fluid" src="images/payment-icon/3.png" alt=""></li>-->
+<!--                                            <li><img class="img-fluid" src="images/payment-icon/5.png" alt=""></li>-->
+<!--                                            <li><img class="img-fluid" src="images/payment-icon/7.png" alt=""></li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <hr class="mb-1">
                     </div>
                 </div>
@@ -276,10 +276,10 @@
                                             <a th:href="|/products/view/${item.product.id}|"
                                                th:text="${item.product.name}"></a>
                                             <div class="small text-muted">
-                                                <span class="mx-2" th:text="|Price: £ ${item.product.price} |"></span>
+                                                <span class="mx-2" th:text="|Price: $ ${item.product.price} |"></span>
                                                 <span class="mx-2" th:text="|Qty: ${item.quantity} |"></span>
                                                 <span class="mx-2"
-                                                      th:text="|Subtotal: £ ${item.quantity*item.product.price} |"></span>
+                                                      th:text="|Subtotal: $ ${item.quantity*item.product.price} |"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -299,7 +299,7 @@
                                 <div class="d-flex">
                                     <h4>Sub Total</h4>
                                     <div class="ml-auto font-weight-bold" id="subTotal"
-                                         th:text="|${totalPrice}|"></div>
+                                         th:utext="|$ ${totalPrice}|"></div>
                                     <input type="hidden" name="subTotal" th:value="${totalPrice}">
                                 </div>
                                 <div class="d-flex">
@@ -315,6 +315,7 @@
                                 <div class="d-flex">
                                     <h4>Tax</h4>
                                     <div class="ml-auto font-weight-bold">0</div>
+                                    <input type="hidden" name="tax" value="0">
                                 </div>
                                 <div class="d-flex">
                                     <h4>Shipping Cost</h4>
@@ -324,7 +325,7 @@
                                 <div class="d-flex gr-total">
                                     <h5>Grand Total</h5>
                                     <div class="ml-auto h5" id="grandTotal"
-                                         th:text="|${totalPrice}|"></div>
+                                         th:utext="|$ ${totalPrice}|"></div>
                                     <input type="hidden" name="grandTotal" th:value="${totalPrice}">
                                 </div>
                                 <hr>
@@ -344,93 +345,6 @@
 </div>
 <!-- End Cart -->
 
-<!-- Start Instagram Feed  -->
-<div class="instagram-box">
-    <div class="main-instagram owl-carousel owl-theme">
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-01.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-02.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-03.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-04.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-05.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-06.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-07.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-08.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-09.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ins-inner-box">
-                <img src="images/instagram-img-05.jpg" alt=""/>
-                <div class="hov-in">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Instagram Feed  -->
-
 <div th:include="fragment/footer :: body"></div>
 </body>
 
@@ -445,15 +359,19 @@
     }
 
     function getGrandTotal(element) {
-        let subPrice = $("#subTotal").val();
-        let grandTotal = subPrice + element.value;
+        let subPrice = parseInt($("#subTotal").html().replace("$ ",""));
+        let grandTotal = subPrice + parseInt(element.value);
 
-        document.getElementById("grandTotal").innerText = "$" + grandTotal;
+        if (grandTotal > 0) {
+            document.getElementById("grandTotal").innerText = "$ " + grandTotal;
+        } else {
+            document.getElementById("grandTotal").innerText = "$ 0";
+        }
 
         if (element.value == 0) {
             document.getElementById("shippingCost").innerText = "Free";
         } else {
-            document.getElementById("shippingCost").innerText = "$" + element.value;
+            document.getElementById("shippingCost").innerText = "$ " + element.value;
         }
     }
 

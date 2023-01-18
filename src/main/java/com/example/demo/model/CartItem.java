@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.Cart;
-import com.example.demo.model.Product;
 import lombok.*;
 
 import javax.persistence.*;

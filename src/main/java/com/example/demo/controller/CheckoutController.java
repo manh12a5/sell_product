@@ -1,13 +1,16 @@
 package com.example.demo.controller;
 
 import com.example.demo.email.EmailSender;
+import com.example.demo.form.ItemForm;
 import com.example.demo.form.PlaceOrderForm;
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartItem;
 import com.example.demo.model.AppUser;
+import com.example.demo.service.payment.PaymentService;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.cartItem.ICartItemService;
 import com.example.demo.service.login.IAppUserService;
+import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,9 @@ public class CheckoutController {
 
     @Autowired
     private ICartItemService cartItemService;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Autowired
     private EmailSender emailSender;
@@ -70,37 +79,71 @@ public class CheckoutController {
     }
 
     @PostMapping("/order")
-    public ModelAndView getPlaceOrder(@ModelAttribute PlaceOrderForm placeOrderForm) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/");
+    public void getPlaceOrder(@ModelAttribute PlaceOrderForm placeOrderForm,
+                                      HttpServletResponse response) throws PayPalRESTException, IOException {
+        setShipping(placeOrderForm);
+        String url = getURLPayment(placeOrderForm);
+        sendEmailAfterPayment(placeOrderForm);
 
+        response.sendRedirect(url);
+    }
+
+    private void sendEmailAfterPayment(PlaceOrderForm placeOrderForm) {
         Map<String, Object> templateAttributes = new LinkedHashMap<>();
+
         templateAttributes.put("firstName", placeOrderForm.getFirstName());
-        templateAttributes.put("lastName", placeOrderForm.getFirstName());
+        templateAttributes.put("lastName", placeOrderForm.getLastName());
         templateAttributes.put("email", placeOrderForm.getEmail());
         templateAttributes.put("address", placeOrderForm.getAddress());
         templateAttributes.put("phoneNumber", placeOrderForm.getPhoneNumber());
-        templateAttributes.put("typePayment", placeOrderForm.getTypePayment());
-
-        List<CartItem> cartItems = cartItemService.findCartItemByCartId(placeOrderForm.getCartId());
-        templateAttributes.put("cartItems", cartItems);
-
         templateAttributes.put("subTotal", placeOrderForm.getSubTotal());
-        templateAttributes.put("discount", placeOrderForm.getDiscount());
-        getShipping(placeOrderForm.getShippingMethod(), templateAttributes);
+        templateAttributes.put("shippingCost", placeOrderForm.getShippingCost());
+        templateAttributes.put("tax", placeOrderForm.getTax());
         templateAttributes.put("grandTotal", placeOrderForm.getGrandTotal());
 
-        emailSender.send(placeOrderForm.getEmail(), templateAttributes, "email/placeOrder");
+        List<CartItem> cartItems = cartItemService.findCartItemByCartId(placeOrderForm.getCartId());
+        List<ItemForm> itemFormList = new ArrayList<>();
+        for (CartItem item: cartItems) {
+            ItemForm itemForm = new ItemForm();
+            itemForm.setName(item.getProduct().getName());
+            double priceOfItem = item.getProduct().getPrice() * item.getQuantity();
+            itemForm.setPrice(Double.toString(priceOfItem));
+            itemForm.setQuantity(Integer.toString(item.getQuantity()));
+            itemForm.setCurrency("USD");
+            itemForm.setTax("0");
+
+            itemFormList.add(itemForm);
+        }
+        templateAttributes.put("itemFormList", itemFormList);
+
+        emailSender.send(placeOrderForm.getEmail(), templateAttributes,
+                "email/placeOrder", "Place Order");
 
         cartItemService.deleteCartItemByCartId(placeOrderForm.getCartId());
-
-        return modelAndView;
     }
 
-    private void getShipping(String shipping, Map<String, Object> templateAttributes) {
+    private String getURLPayment(PlaceOrderForm placeOrderForm) throws PayPalRESTException {
+        String url;
+
+        switch (placeOrderForm.getPaymentMethod()) {
+            case "0":
+                url = "/payment/paypal/review_payment";
+                break;
+            case "3":
+                url = paymentService.authorizePayment(placeOrderForm);
+                break;
+            default:
+                url = "/payment/paypal/cancel";
+        }
+
+        return url;
+    }
+
+    private void setShipping(PlaceOrderForm placeOrderForm) {
         String shippingMethod = "";
         double shippingCost = 0;
 
-        switch (shipping) {
+        switch (placeOrderForm.getShippingMethod()) {
             case "0":
                 shippingCost = 0;
                 shippingMethod = "Standard Delivery";
@@ -115,8 +158,8 @@ public class CheckoutController {
                 break;
         }
 
-        templateAttributes.put("shippingCost", shippingCost);
-        templateAttributes.put("shippingMethod", shippingMethod);
+        placeOrderForm.setShippingCost(shippingCost);
+        placeOrderForm.setShippingMethod(shippingMethod);
     }
 
 }

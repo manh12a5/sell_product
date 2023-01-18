@@ -9,4 +9,5 @@ public interface ICartService extends IService<Cart> {
     Cart findCartByAppUserId(Long id);
     void addToCart(CartForm cartForm, Cart cart, Product product);
     void removeGuestCart();
+    Cart findCartByEmailOfAppUser(String email);
 }
