@@ -9,13 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface AppUserWishListRepository extends JpaRepository<AppUserWishList, AppUserWishListPk> {
 
-    @Query(value = "SELECT * FROM app_user_wish_list WHERE app_user_id = :appUserId", nativeQuery = true)
-    Optional<AppUserWishList> findByAppUserId(@Param("appUserId") Long appUserId);
+    @Query(value = "SELECT p FROM #{#entityName} p JOIN FETCH p.id.appUser JOIN FETCH p.id.wishList WHERE p.id.appUser.id = :appUserId")
+    List<AppUserWishList> findByAppUserId(@Param("appUserId") Long appUserId);
 
     @Modifying
     @Transactional

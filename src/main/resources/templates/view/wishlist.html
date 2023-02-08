@@ -75,11 +75,11 @@
                         </thead>
                         <tbody>
                         <form th:object="${cartForm}" th:action="@{/cart/addToCart}" method="post">
-                            <tr th:each="wishlist: ${wishList}">
+                            <tr th:each="wishlist: ${wishLists}">
                                 <input type="hidden" th:value="${wishlist.product.id}" name="productId">
                                 <td class="thumbnail-img">
                                     <a th:href="@{/products/view/{id}(id=${wishlist.product.id})}">
-                                        <img class="img-fluid" th:src="@{|/${wishlist.product.image}|}" alt=""/>
+                                        <img class="img-fluid" th:src="@{|/${wishlist.product.picture.mainPicture}|}" alt=""/>
                                     </a>
                                 </td>
                                 <td class="name-pr">
@@ -108,9 +108,9 @@
                                     <input class="form-control" value="1" min="1" max="99" type="number" name="quantity">
                                 </td>
                                 <td class="quantity-box"
-                                    th:if="${warehouse != null || inStock > 0}">In Stock</td>
+                                    th:if="${inStock > 0}">In Stock</td>
                                 <td class="quantity-box"
-                                    th:if="${warehouse == null || inStock == 0}">Out of Stock</td>
+                                    th:if="${inStock == 0}">Out of Stock</td>
                                 <td class="add-pr">
                                     <button class="btn hvr-hover" style="color: white">Add to Cart</button>
                                 </td>

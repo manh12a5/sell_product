@@ -78,11 +78,14 @@
             <div th:if="${param.error}" class="alert alert-danger">
                 Invalid username or password
             </div>
+            <div th:if="${success != null}" class="alert alert-success"
+                th:text="${success}"></div>
             <input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus="" />
             <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
-            <div id="register-link" class="text-right">
-                <a href="/login/register" class="text-info">Register here</a>
-            </div>
+            <div>
+                <a style="float: left" href="/login/forgottenPassword" class="text-info">Forgotten Password</a>
+                <a style="float: right" href="/login/register" class="text-info">Register here</a>
+            </div><br>
             <button class="btn btn-lg btn-primary btn-block"  name="submit" value="Login" type="submit">Login</button>
         </form>
 

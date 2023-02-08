@@ -1,11 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.form.WarehouseForm;
-import com.example.demo.model.AppUser;
 import com.example.demo.model.Product;
-import com.example.demo.model.Warehouse;
-import com.example.demo.model.WishList;
-import com.example.demo.model.pk.AppUserWishListPk;
 import com.example.demo.service.appUserWishList.IAppUserWishListService;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.category.ICategoryService;
@@ -21,8 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("")

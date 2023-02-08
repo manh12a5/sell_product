@@ -8,8 +8,7 @@ import java.util.Collection;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class WishList {
 
     @Id
@@ -21,4 +20,5 @@ public class WishList {
 
     @OneToMany(mappedBy = "appUserWishListId.wishList", fetch = FetchType.LAZY)
     private Collection<AppUserWishList> appUserWishListCollection;
+
 }

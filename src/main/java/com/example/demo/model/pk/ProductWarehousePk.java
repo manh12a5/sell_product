@@ -18,11 +18,11 @@ import java.io.Serializable;
 @Embeddable
 public class ProductWarehousePk implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 

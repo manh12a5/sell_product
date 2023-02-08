@@ -18,11 +18,11 @@ import java.io.Serializable;
 @Embeddable
 public class AppUserWishListPk implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "appUser_id")
     private AppUser appUser;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "wishList_id")
     private WishList wishList;
 }

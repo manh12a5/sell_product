@@ -1,6 +1,7 @@
 package com.example.demo.service.login;
 
 import com.example.demo.email.EmailSender;
+import com.example.demo.form.PasswordForm;
 import com.example.demo.model.AppRole;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Cart;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +55,9 @@ public class AppUserService implements IAppUserService {
     private CartRepository cartRepository;
 
     private final EntityManager entityManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -170,7 +175,7 @@ public class AppUserService implements IAppUserService {
 
         confirmationTokenRepository.save(confirmationToken);
 
-        String url = applicationUrl(token, request);
+        String url = applicationUrl("register", token, request);
         Map<String, Object> templateAttributes = new LinkedHashMap<>();
         templateAttributes.put("name", appUser.getLastName());
         templateAttributes.put("url", url);
@@ -182,13 +187,81 @@ public class AppUserService implements IAppUserService {
         return "Saved user";
     }
 
-    private String applicationUrl(String token, HttpServletRequest request) {
-        return "http://"
+    private String applicationUrl(String type, String token, HttpServletRequest request) {
+        String url = "http://"
                 + request.getServerName() //localhost
                 + ":"
                 + request.getServerPort() //Port
-                + request.getRequestURI()
-                + "/confirm?token=" + token;
+//                + request.getRequestURI();
+                + "/login"
+                + request.getContextPath();
+        url += "/" + type + "?token=" + token;
+
+        return url;
+    }
+
+    @Override
+    public Boolean changePassword(PasswordForm passwordForm) {
+        AppUser appUser = this.getCurrentUser();
+        if (appUser != null
+                && passwordEncoder.matches(appUser.getPassword(), passwordForm.getOldPassword())) {
+            appUser.setPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
+            appUserRepository.save(appUser);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Boolean forgottenPassword(PasswordForm passwordForm, HttpServletRequest request) {
+        AppUser appUser = appUserRepository.findByEmail(passwordForm.getUsername()).orElse(null);
+
+        if (appUser != null) {
+            String token = UUID.randomUUID().toString();
+            ConfirmationToken confirmationToken
+                    = confirmationTokenService.getConfirmationTokenByUserId(appUser.getId());
+            confirmationToken.setToken(token);
+            confirmationToken.setCreatedTime(LocalDateTime.now());
+            confirmationToken.setExpiredTime(LocalDateTime.now().plusMinutes(15));
+
+            confirmationTokenRepository.save(confirmationToken);
+
+            String url = applicationUrl("resetPassword", token, request);
+            Map<String, Object> templateAttributes = new LinkedHashMap<>();
+            templateAttributes.put("name", appUser.getLastName());
+            templateAttributes.put("url", url);
+
+            emailSender.send(appUser.getEmail(), templateAttributes,
+                    "email/resetPassword", "Reset your password");
+
+            log.info("Confirmation Token is: {}", token);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String resetPassword(String token, PasswordForm passwordForm) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token);
+
+        LocalDateTime presentTime = LocalDateTime.now();
+        LocalDateTime expiredTime = confirmationToken.getExpiredTime();
+        if (expiredTime.isBefore(presentTime)) {
+            return "Token expired";
+        }
+        confirmationToken.setConfirmedAt(presentTime);
+
+        AppUser appUser = appUserRepository.findByEmail(confirmationToken.getAppUser().getEmail())
+                .orElse(null);
+        if (appUser != null) {
+            appUser.setPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
+            appUserRepository.save(appUser);
+        }
+
+        return "redirect:/login";
     }
 
 }

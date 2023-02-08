@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,34 +29,37 @@ public class WishListController {
     private IAppUserWishListService appUserWishListService;
 
     @Autowired
-    private IWishListService wishListService;
+    private IWarehouseService warehouseService;
 
     @Autowired
-    private IWarehouseService warehouseService;
+    private IWishListService wishListService;
 
     @GetMapping("")
     public ModelAndView wishList() {
         ModelAndView modelAndView = new ModelAndView("view/wishlist");
-        WishList wishList = null;
-        List<WarehouseForm> warehouse = null;
+        List<WishList> wishLists = new ArrayList<>();
+        List<WarehouseForm> warehouse = new ArrayList<>();
         int inStock = 0;
 
         AppUser appUser = appUserService.getCurrentUser();
         if (appUser != null) {
-            AppUserWishList appUserWishList = appUserWishListService.findByAppUserId(appUser.getId()).orElse(null);
+            List<AppUserWishList> appUserWishLists = appUserWishListService.findByAppUserId(appUser.getId());
 
-            if (appUserWishList != null) {
-                wishList = wishListService.findById(appUserWishList.getAppUserWishListId().getWishList().getId());
-                warehouse = warehouseService.findWarehouseByProductId(wishList.getProduct().getId());
+            if (appUserWishLists != null) {
+                for (AppUserWishList appUserWishList: appUserWishLists) {
+                    WishList wishList = appUserWishList.getAppUserWishListId().getWishList();
+                    wishLists.add(wishList);
 
-                for (WarehouseForm warehouseForm: warehouse) {
-                    inStock += warehouseForm.getStock();
+                    warehouse = warehouseService.findWarehouseByProductId(wishList.getProduct().getId());
+                    for (WarehouseForm warehouseForm: warehouse) {
+                        inStock += warehouseForm.getStock();
+                    }
                 }
             }
         }
 
         modelAndView.addObject("inStock", inStock);
-        modelAndView.addObject("wishList", wishList);
+        modelAndView.addObject("wishLists", wishLists);
         modelAndView.addObject("warehouse", warehouse);
 
         return modelAndView;
@@ -63,10 +67,14 @@ public class WishListController {
 
     @GetMapping("/addWishlist/{productId}")
     public String addWishList(@PathVariable Long productId) {
+        String url = "redirect:/login";
+
         if (appUserService.getCurrentUser() != null) {
             wishListService.addWistList(productId);
+            url = "redirect:/wishlist";
         }
-        return "redirect:/wishlist";
+
+        return url;
     }
 
     @GetMapping("/deleteWishlist/{id}")

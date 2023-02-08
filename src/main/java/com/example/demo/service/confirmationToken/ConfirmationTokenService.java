@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConfirmationTokenService {
+
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
 
@@ -16,5 +17,9 @@ public class ConfirmationTokenService {
 
     public ConfirmationToken getToken(String token) {
         return confirmationTokenRepository.findByToken(token).orElse(null);
+    }
+
+    public ConfirmationToken getConfirmationTokenByUserId(Long userId) {
+        return confirmationTokenRepository.findByAppUserId(userId).orElse(null);
     }
 }
