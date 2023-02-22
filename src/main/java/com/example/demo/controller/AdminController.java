@@ -73,6 +73,25 @@ public class  AdminController {
         return "admin/warehouse";
     }
 
+    @GetMapping("/user-manager")
+    public String adminUserPage(Model model) {
+        List<AppUser> users = appUserService.getAllUserByAppRole("USER");
+
+        model.addAttribute("users", users);
+        return "admin/user-manager";
+    }
+
+    @DeleteMapping("/user-manager/delete/{id}")
+    public String deleteUserByAdmin(@PathVariable Long id) {
+        AppUser appUser = appUserService.findById(id);
+
+        if (appUser.getAppRole().name().equals("USER")) {
+            appUserService.remove(id);
+        }
+
+        return "admin/user-manager";
+    }
+
 
 //    @GetMapping("/account/create")
 //    public ModelAndView showFormCreateUser() {

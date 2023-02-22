@@ -100,6 +100,11 @@ public class AppUserService implements IAppUserService {
     }
 
     @Override
+    public List<AppUser> getAllUserByAppRole(String role) {
+        return appUserRepository.getAllUsersByAppRole(role);
+    }
+
+    @Override
     public List<AppUser> findListAppUserByEmail(String email) {
         String sql = "SELECT * FROM app_user WHERE email LIKE :email ";
 
@@ -204,7 +209,7 @@ public class AppUserService implements IAppUserService {
     public Boolean changePassword(PasswordForm passwordForm) {
         AppUser appUser = this.getCurrentUser();
         if (appUser != null
-                && passwordEncoder.matches(appUser.getPassword(), passwordForm.getOldPassword())) {
+                && passwordEncoder.matches(passwordForm.getOldPassword(), appUser.getPassword())) {
             appUser.setPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
             appUserRepository.save(appUser);
             return true;

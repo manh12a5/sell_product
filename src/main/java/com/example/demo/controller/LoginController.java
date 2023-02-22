@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.form.PasswordForm;
+import com.example.demo.form.ProfileForm;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.ConfirmationToken;
 import com.example.demo.service.cart.ICartService;
@@ -61,6 +62,7 @@ public class LoginController {
 
     @GetMapping("/changePassword")
     public String getChangePassword(Model model) {
+        model.addAttribute("success", false);
         model.addAttribute("passwordForm", new PasswordForm());
         return "login/change-password";
     }
@@ -68,13 +70,9 @@ public class LoginController {
     @PostMapping("/changePassword")
     public String changePassword(@ModelAttribute PasswordForm passwordForm, Model model) {
         Boolean checkChangePassword = appUserService.changePassword(passwordForm);
-        if (checkChangePassword) {
-            model.addAttribute("messages", "Changed password error");
-            return "login/change-password";
-        }
-
-        model.addAttribute("messages", "Changed password successfully");
-        return "login/login";
+        model.addAttribute("success", checkChangePassword);
+        model.addAttribute("error", checkChangePassword);
+        return "login/change-password";
     }
 
     @GetMapping("/forgottenPassword")
@@ -123,4 +121,31 @@ public class LoginController {
         return "login/403denied";
     }
 
+    @GetMapping("/profile")
+    public String getUserProfile(Model model) {
+        AppUser appUser = currentUser();
+
+        if (appUser == null) {
+            return "login/403denied";
+        }
+
+        model.addAttribute("user", appUser);
+        return "login/profile";
+    }
+
+    @PostMapping("/profile")
+    public String userProfile(@ModelAttribute ProfileForm profileForm, Model model) {
+        AppUser appUser = currentUser();
+
+        if (appUser == null) {
+            return "login/403denied";
+        }
+
+        appUser.setAddress(profileForm.getAddress());
+        appUser.setPhoneNumber(profileForm.getPhoneNumber());
+        appUserService.save(appUser);
+
+        model.addAttribute("user", appUser);
+        return "login/profile";
+    }
 }

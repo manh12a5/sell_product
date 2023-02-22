@@ -15,28 +15,36 @@
                     <div id="offer-box" class="carouselTicker">
                         <ul class="offer-box">
                             <li>
-                                <i class="fab fa-opencart"></i> Off 10%! Shop Now Man
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart1}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> 50% - 80% off on Fashion
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart2}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT20
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart3}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart4}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> Off 10%! Shop Now Man
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart5}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> 50% - 80% off on Fashion
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart6}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT20
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart7}"></th:block>
                             </li>
                             <li>
-                                <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                                <i class="fab fa-opencart"></i>
+                                <th:block th:text="#{header.opencart8}"></th:block>
                             </li>
                         </ul>
                     </div>
@@ -60,7 +68,7 @@
                         </li>
                         <th:block sec:authorize="isAuthenticated()">
                             <li>
-                                <a href="/" sec:authentication="principal.username"></a>
+                                <a href="/login/profile" sec:authentication="principal.username"></a>
                             </li>
                             <th:block sec:authorize="hasAuthority('ADMIN')">
                                 <li>

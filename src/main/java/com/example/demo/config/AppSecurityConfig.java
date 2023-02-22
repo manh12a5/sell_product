@@ -44,7 +44,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter implements W
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-                .csrf().disable()
+                .csrf().disable() //It use for postman or other applications to get API
                 .authorizeRequests()
                 .antMatchers(URL_PERMIT_ALL).permitAll()
                 .antMatchers(URL_PERMIT_ADMIN).hasAnyAuthority("ADMIN")
