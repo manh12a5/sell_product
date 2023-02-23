@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.email.EmailSender;
 import com.example.demo.form.ItemForm;
 import com.example.demo.model.Cart;
+import com.example.demo.model.OrderCreation;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.cartItem.ICartItemService;
+import com.example.demo.service.order.IOrderCreationService;
 import com.example.demo.service.payment.PaymentService;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.PayPalRESTException;
@@ -36,6 +38,9 @@ public class PaymentController {
     @Autowired
     private ICartService cartService;
 
+    @Autowired
+    private IOrderCreationService orderCreationService;
+
     @GetMapping("/paypal/cancel")
     public ModelAndView getViewCancelPaypal() {
         return new ModelAndView("payment/cancel");
@@ -50,6 +55,8 @@ public class PaymentController {
 
         if (paymentId != null) {
             Payment payment = paymentService.getPaymentDetails(paymentId);
+            OrderCreation orderCreation = orderCreationService.findById(Long.parseLong(payment.getNoteToPayer()));
+            orderCreation.setIsBackorderAllowed(true);
             sendEmailAfterPaypal(payment);
         }
 

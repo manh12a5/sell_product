@@ -115,6 +115,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Page<Product> findProductByCategoryId(Long categoryId, Pageable pageable) {
+        return productRepository.findProductByCategoryId(pageable, categoryId);
+    }
+
+    @Override
     public Page<Product> findTop5ByOrderByPriceDesc(Pageable pageable) {
         return productRepository.findTop5ByOrderByPriceDesc(pageable);
     }

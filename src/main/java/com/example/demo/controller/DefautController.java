@@ -78,10 +78,10 @@ public class DefautController {
         return modelAndView;
     }
 
-    @GetMapping("/searchCategory/{id}")
-    public ModelAndView showSearchCategory(@PathVariable Long id) {
+    @GetMapping("/searchCategory/{categoryId}")
+    public ModelAndView showSearchCategory(@PathVariable Long categoryId, @PageableDefault(size = 6) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("view/shop");
-        modelAndView.addObject("products", productService.findById(id));
+        modelAndView.addObject("products", productService.findProductByCategoryId(categoryId, pageable));
         return modelAndView;
     }
 

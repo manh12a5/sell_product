@@ -145,7 +145,7 @@
                     </div>
                     <hr> </div>
             </div>
-            <div class="col-12 d-flex shopping-box">
+            <div class="col-12 d-flex shopping-box" th:if="${!cartForm.cartItemFormList.isEmpty()}">
                 <a href="/checkout" class="ml-auto btn hvr-hover">Checkout</a>
             </div>
         </div>
@@ -159,7 +159,8 @@
 
 </body>
 
-<script>
+<script th:inline="javascript">
+
     function callCoupon() {
         $("#searchCoupon").autocomplete({
             source: function (request, response) {
@@ -202,6 +203,7 @@
             return $("<li></li>").html("<div>" + "Coupon code: " + item.code + " - Discount: " + item.discount + "</div>").appendTo(ul);
         };
     }
+
 </script>
 
 </html>

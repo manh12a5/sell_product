@@ -46,7 +46,8 @@ public class PaymentService {
         requestPayment.setPayer(payer)
                 .setRedirectUrls(redirectUrls)
                 .setTransactions(transactions)
-                .setIntent("authorize");
+                .setIntent("authorize")
+                .setNoteToPayer(Long.toString(placeOrderForm.getOrderId()));
 
         APIContext apiContext = new APIContext(clientId, clientSecret, MODE);
         Payment approvedPayment = requestPayment.create(apiContext);
@@ -126,8 +127,7 @@ public class PaymentService {
         PayerInfo payerInfo = new PayerInfo();
         payerInfo.setFirstName(currentUser().getFirstName())
                 .setLastName(currentUser().getLastName())
-                .setEmail(currentUser().getEmail())
-                .setPhone(currentUser().getPhoneNumber() != null ? currentUser().getPhoneNumber() : "");
+                .setEmail(currentUser().getEmail());
 
         payer.setPayerInfo(payerInfo);
 

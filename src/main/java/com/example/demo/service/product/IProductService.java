@@ -23,6 +23,8 @@ public interface IProductService extends IService<Product> {
 
     Page<Product> findProductByCategoryName(Long id, Pageable pageable);
 
+    Page<Product> findProductByCategoryId(Long categoryId, Pageable pageable);
+
     Page<Product> findTop5ByOrderByPriceDesc(Pageable pageable);
 
     Page<Product> findTop5ByOrderByPriceAsc(Pageable pageable);

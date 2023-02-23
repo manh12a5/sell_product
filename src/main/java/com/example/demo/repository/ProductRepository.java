@@ -48,4 +48,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
                                               @Param("maxPrice") Double maxPrice,
                                               Pageable pageable);
 
+    @Query(value = "select * from product where product.category_id = :categoryId", nativeQuery = true)
+    Page<Product> findProductByCategoryId(Pageable pageable, @Param("categoryId") Long categoryId);
+
 }

@@ -6,6 +6,8 @@ import com.example.demo.form.PlaceOrderForm;
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartItem;
 import com.example.demo.model.AppUser;
+import com.example.demo.model.OrderCreation;
+import com.example.demo.service.order.IOrderCreationService;
 import com.example.demo.service.payment.PaymentService;
 import com.example.demo.service.cart.ICartService;
 import com.example.demo.service.cartItem.ICartItemService;
@@ -13,6 +15,7 @@ import com.example.demo.service.login.IAppUserService;
 import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +42,9 @@ public class CheckoutController {
 
     @Autowired
     private ICartItemService cartItemService;
+
+    @Autowired
+    private IOrderCreationService orderCreationService;
 
     @Autowired
     private PaymentService paymentService;
@@ -79,11 +85,19 @@ public class CheckoutController {
     }
 
     @PostMapping("/order")
+    @Transactional
     public void getPlaceOrder(@ModelAttribute PlaceOrderForm placeOrderForm,
                                       HttpServletResponse response) throws PayPalRESTException, IOException {
         setShipping(placeOrderForm);
+
+        //Create order
+        Long orderID = orderCreationService.createOrderCreation(placeOrderForm);
+        placeOrderForm.setOrderId(orderID);
+
         String url = getURLPayment(placeOrderForm);
-        sendEmailAfterPayment(placeOrderForm);
+
+        //Delete cart after order
+        cartItemService.deleteCartItemByCartId(placeOrderForm.getCartId());
 
         response.sendRedirect(url);
     }
@@ -118,8 +132,6 @@ public class CheckoutController {
 
         emailSender.send(placeOrderForm.getEmail(), templateAttributes,
                 "email/placeOrder", "Place Order");
-
-        cartItemService.deleteCartItemByCartId(placeOrderForm.getCartId());
     }
 
     private String getURLPayment(PlaceOrderForm placeOrderForm) throws PayPalRESTException {
@@ -128,6 +140,9 @@ public class CheckoutController {
         switch (placeOrderForm.getPaymentMethod()) {
             case "0":
                 url = "/payment/paypal/review_payment";
+                sendEmailAfterPayment(placeOrderForm);
+                OrderCreation orderCreation = orderCreationService.findById(placeOrderForm.getOrderId());
+                orderCreation.setIsBackorderAllowed(true);
                 break;
             case "3":
                 url = paymentService.authorizePayment(placeOrderForm);
@@ -160,6 +175,7 @@ public class CheckoutController {
 
         placeOrderForm.setShippingCost(shippingCost);
         placeOrderForm.setShippingMethod(shippingMethod);
+        placeOrderForm.setGrandTotal(placeOrderForm.getGrandTotal() + shippingCost);
     }
 
 }

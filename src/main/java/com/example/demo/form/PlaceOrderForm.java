@@ -17,6 +17,7 @@ public class PlaceOrderForm {
     private String paymentMethod;
 
     private Long cartId;
+    private Long orderId;
 
     private Double subTotal;
     private Double discount;

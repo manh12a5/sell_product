@@ -44,7 +44,7 @@ public class WarehouseService implements IWarehouseService {
     }
 
     @Override
-    public List<WarehouseForm> findWarehouseByProductId(Long productId) {
+    public List<WarehouseForm> findWarehouseFormByProductId(Long productId) {
         String sql = "SELECT warehouse.warehouse_name, warehouse.stock "
                 + "FROM product "
                 + "LEFT JOIN product_warehouse ON product_warehouse.product_id = product.id "

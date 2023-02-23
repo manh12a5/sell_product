@@ -50,7 +50,7 @@ public class WishListController {
                     WishList wishList = appUserWishList.getAppUserWishListId().getWishList();
                     wishLists.add(wishList);
 
-                    warehouse = warehouseService.findWarehouseByProductId(wishList.getProduct().getId());
+                    warehouse = warehouseService.findWarehouseFormByProductId(wishList.getProduct().getId());
                     for (WarehouseForm warehouseForm: warehouse) {
                         inStock += warehouseForm.getStock();
                     }

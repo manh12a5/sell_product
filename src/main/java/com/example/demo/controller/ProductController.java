@@ -15,19 +15,13 @@ import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;
 import com.example.demo.service.warehouse.IWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -130,7 +124,7 @@ public class ProductController {
         ModelAndView modelAndView = new ModelAndView("view/shop-detail");
         Product product = productService.findById(id);
         List<Comment> comments = commentService.getAllCommentByProductIdDESC(product.getId());
-        List<WarehouseForm> warehouseForms = warehouseService.findWarehouseByProductId(product.getId());
+        List<WarehouseForm> warehouseForms = warehouseService.findWarehouseFormByProductId(product.getId());
 
         modelAndView.addObject("product", product);
         modelAndView.addObject("productId", id);

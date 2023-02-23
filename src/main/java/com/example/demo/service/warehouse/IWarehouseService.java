@@ -7,5 +7,5 @@ import com.example.demo.service.IService;
 import java.util.List;
 
 public interface IWarehouseService extends IService<Warehouse> {
-    List<WarehouseForm> findWarehouseByProductId(Long productId);
+    List<WarehouseForm> findWarehouseFormByProductId(Long productId);
 }
