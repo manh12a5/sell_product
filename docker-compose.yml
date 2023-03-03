@@ -1,37 +1,42 @@
-version: "3.8"
-
+ersion: '3.8'
+#containers => services
 services:
-  mysqldb:
-    image: mysql:latest
-    restart: unless-stopped
-    env_file: ./properties.env
-    environment:
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=sale_product
+  mysql-springboot-container:
+    image: mysql:8.0.28
+    container_name: mysql-springboot-container
     ports:
-      - 3307:3306
+      - 3310:3306
     volumes:
-      - db:/var/lib/mysql
-  app:
-    depends_on:
-      - mysqldb
-    build: ./
-    restart: on-failure
-    env_file: ./properties.env
-    ports:
-      - 8080:8080
+      - mysql-springboot-data:/var/lib/mysql
+      - mysql-springboot-config-deamond:/etc/mysql/conf.d
+    networks:
+      - backend
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://localhost:3306/sell_product",
-        "spring.datasource.username" : "root",
-        "spring.datasource.password" : "123456",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
-      }'
+      MYSQL_USER: manhnd
+      MYSQL_PASSWORD: Abc@123456789
+      MYSQL_ROOT_PASSWORD: Abc@123456789
+      MYSQL_DATABASE: sell_product
+  sell_product-docker-container:
+    image: 0398927895/sell_product-docker:v1.0.0
+    container_name: sell_product-docker-container
+    ports:
+      - 8086:8080
     volumes:
-      - .m2:/root/.m2
-    stdin_open: true
-    tty: true
+      - ./:/app
+    networks:
+      - backend
+    env_file:
+      - ./properties.env
+#create networks
+networks:
+  backend:
+  name: sell_product-app-network
+volumns:
+  mysql-springboot-data:
+  mysql-springboot-config-deamond:
 
-volumes:
-  db:
+#Remove container
+#docker rm -f mysql-springboot-container sell_product-docker-container
+
+#Run docker compose
+#docker-compose -f docker-compose.yml up --build
