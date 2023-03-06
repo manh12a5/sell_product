@@ -31,7 +31,7 @@ services:
 networks:
   backend:
   name: sell_product-app-network
-volumns:
+volumes:
   mysql-springboot-data:
   mysql-springboot-config-deamond:
 
