@@ -11,13 +11,13 @@ services:
       - mysql-springboot-config-deamond:/etc/mysql/conf.d
     networks:
       - backend
-    environment:
-      MYSQL_USER: manhnd
-      MYSQL_PASSWORD: Abc@123456789
-      MYSQL_ROOT_PASSWORD: Abc@123456789
-      MYSQL_DATABASE: sell_product
+#    environment:
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: QRtx-R00*
+#      MYSQL_ROOT_PASSWORD: QRtx-R00*
+#      MYSQL_DATABASE: sell_product
   sell_product-docker-container:
-    image: 0398927895/sell_product-docker:v1.0.0
+    image: sell_product-docker:v1.0.0 #0398927895/sell_product-docker:v1.0.0
     container_name: sell_product-docker-container
     ports:
       - 8086:8080
