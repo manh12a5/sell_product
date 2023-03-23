@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#editCommentForm').submit(function (event) {
+                // var user = $('#user.id').val();
+                // var product = $('#ee').val();
+                var comment = $('#comment' +
+                    '').val();
+                // var date = $('#date').val();
+                // var json = { "uiser" : user.id, "product" : product.id, "comment": comment,"date":date};
+                var json = {
+                    "comment" : comment
+                    // ,
+                    // product :{
+                    //     id:product
+                    // }
+                }
+                $.ajax({
+                    url: $("#editCommentForm").attr("action"),
+                    data: JSON.stringify(json),
+                    type: "POST",
+
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Accept", "application/json");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                    }
+                    // ,
+                    // success: function (comment) {
+                    //     var respContent = "";
+                    //
+                    //     respContent += "<span class='success'>Comment was edited: [";
+                    //     respContent += comment.user.id + " : ";
+                    //     respContent += comment.product.id + " : ";
+                    //     respContent += comment.comment + " : " ;
+                    //     respContent += comment.date + "]</span>"
+                    //     $("#commentFromResponse").html(respContent);
+                    // }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+<!--    <input id="ee" value="1">-->
+    <h1>Edit Comment</h1>
+    <form id="editCommentForm" th:object="${comment}">
+        <table>
+            <tbody>
+            <tr>
+                <td>Comment:</td>
+                <td><input type="text" th:field="*{comment}"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Edit" /></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a th:href="@{/comments}">List</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 8080
+
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL} #jdbc:mysql://mysql-springboot-container:3306/sell_product
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          sender: ${MAIL_USERNAME}
+          starttls.enable: true
+          ssl.protocols: TLSv1.2
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  web:
+    resources:
+      static-locations: file:///${UPLOAD_PATH}, classpath:/static
+  main:
+    allow-circular-references: true
+
+custom:
+  scheduler:
+    cart:
+      cron: 0 0 * * * ?
+
+payment:
+  client:
+    id: ${CLIENT_ID}
+    secret: ${CLIENT_SECRET}
+
+customs:
+  urlServerName: https://8bda-14-160-25-79.ap.ngrok.io

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Review Payment</title>
+
+</head>
+<body>
+<div th:include="fragment/header :: body"></div>
+<br>
+<div class="container" style="margin-top:5%;">
+    <div class="row">
+        <div class="jumbotron" style="box-shadow: 2px 2px 4px #000000; margin: auto; width: 50%;">
+            <h2 class="text-center">YOUR ORDER HAS BEEN RECEIVED</h2>
+            <h3 class="text-center">Thank you for your payment, it’s processing</h3>
+
+            <p class="text-center">Your order is success</p>
+            <p class="text-center">You will receive an order confirmation email with details of your order and a link to track your process.</p>
+            <div style="text-align: center;"><div class="btn-group" style="margin-top:50px;">
+                <a href="/" class="btn btn-lg btn-warning">GO TO HOME PAGE</a>
+            </div></div>
+        </div>
+    </div>
+</div>
+<br>
+<div th:include="fragment/footer :: body"></div>
+</body>
+</html>

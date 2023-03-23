@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#newCommentForm').submit(function(event) {
+                // var user = $('#user.id').val();
+                // var product = $('#aa').val();
+                var comment = $('#comment' +
+                    '').val();
+                // var date = $('#date').val();
+                // var json = { "user" : user.id, "product" : product.id, "comment": comment};
+                var json = {
+                    comment : comment
+                    // ,
+                    // product:{
+                    //     id:product
+                    // }
+
+                };
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type : "POST",
+                    data: JSON.stringify(json),
+                    url: "/comments/createNewC"
+                    // ,
+                    // success: function(comments) {
+                    //     var respContent = "";
+                    //     respContent += "<span class='success'>Comment was created: [";
+                    //     respContent += comments.user.id + " : ";
+                    //     respContent += comments.product.id + " : ";
+                    //     respContent += comments.comment + " : " ;
+                    //     respContent += comments.date + "]</span>"
+                    //     $("#commentFromResponse").html(respContent);
+                    // }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+<!--    <input id="aa">-->
+    <h1>Create new Comment</h1>
+    <form id="newCommentForm" th:object="${comment}">
+        <table>
+            <tbody>
+            <tr>
+                <td>Comment:</td>
+                <td><input type="text" th:field="*{comment}" /></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Create" /></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a th:href="@{/comments}">List</a>
+</div>
+</body>
+
+</html>

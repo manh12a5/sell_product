@@ -1,0 +1,43 @@
+version: '3.8'
+#containers => services
+services:
+  mysql-springboot-container:
+    image: mysql:latest
+    container_name: mysql-springboot-container
+    ports:
+      - 3310:3306
+    volumes:
+#      - C:/db/:/var/lib/mysql
+      - mysql-springboot-data:/var/lib/mysql
+      - mysql-springboot-config-deamond:/etc/mysql/conf.d
+    networks:
+      - backend
+    env_file:
+      - ./properties.env
+  sell_product-docker-container:
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    image: sell_product-springboot-docker:v1.0.0 #0398927895/sell_product-docker:v1.0.0
+    container_name: sell_product-docker-container
+    ports:
+      - 8086:8080
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+    env_file:
+      - ./properties.env
+#create networks
+networks:
+  backend:
+    name: sell_product-app-network
+volumes:
+  mysql-springboot-data:
+  mysql-springboot-config-deamond:
+
+#Remove container
+#docker rm -f mysql-springboot-container sell_product-docker-container
+
+#Run docker compose
+#docker-compose -f docker-compose.yml up --build
