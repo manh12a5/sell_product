@@ -23,7 +23,8 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                bat 'docker run -p 8081:8080 0398927895/sell_product-docker'
+//                 sh 'docker-compose build'
+                sh 'docker-compose up -d'
             }
         }
     }
