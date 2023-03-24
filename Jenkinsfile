@@ -23,6 +23,7 @@ pipeline {
         }
         stage('docker-compose') {
             steps {
+                withEnv(['$(properties.env)'])
                 bat 'docker-compose build'
                 bat 'docker-compose up -d'
             }
