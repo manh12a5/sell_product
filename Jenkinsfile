@@ -6,7 +6,7 @@ pipeline {
         }
 
     stages {
-        stage('Build') {
+        stage('Clean') {
             steps {
                 bat 'gradle clean'
             }
@@ -16,16 +16,14 @@ pipeline {
 //                 bat 'gradle test'
 //             }
 //         }
-        stage('Install') {
+        stage('Build') {
             steps {
                 bat 'gradle build'
             }
         }
-        stage('docker-compose') {
+        stage('Docker Build') {
             steps {
-                withEnv(['$(properties.env)'])
-                bat 'docker-compose build'
-                bat 'docker-compose up -d'
+                bat 'docker run -p 8081:8080 0398927895/sell_product-docker'
             }
         }
     }
