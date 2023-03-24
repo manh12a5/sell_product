@@ -23,18 +23,14 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                bat 'docker-compose build'
-                bat 'docker-compose up -d'
+                bat 'docker build -t 0398927895/sell_product-docker:latest .'
             }
         }
     }
 
-    post {
+//     post {
 //         always {
 //             junit 'build/test-results/test/*.xml'
 //         }
-        always {
-            sh "docker-compose down || true"
-        }
-    }
+//     }
 }
