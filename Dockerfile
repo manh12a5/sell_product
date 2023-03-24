@@ -16,6 +16,6 @@
 #ENTRYPOINT exec java -jar $APP_HOME/build/libs/$JAR_NAME
 
 FROM openjdk:latest
-ARG JAR_FILE=build/libs/sell_product-master-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/sell_product-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
