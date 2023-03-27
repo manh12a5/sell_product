@@ -29,7 +29,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 withCredentials([file(credentialsId: 'envfile', variable: 'mySecretEnvFile')]){
-                    sh 'cp $mySecretEnvFile $WORKSPACE'
+                    bat 'cp $mySecretEnvFile $WORKSPACE'
                 }
                 // Build docker image
 //              bat 'docker build -t 0398927895/sell_product-docker:latest .'
