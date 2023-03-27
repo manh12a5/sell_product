@@ -24,6 +24,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 bat 'docker build -t 0398927895/sell_product-docker:latest .'
+                bat 'docker-compose -f docker-compose.yml build'
+                bat 'docker-compose -f docker-compose.yml up -d'
             }
         }
     }
