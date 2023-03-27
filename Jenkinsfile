@@ -39,11 +39,11 @@ pipeline {
     post {
         always {
 //             junit 'build/test-results/test/*.xml'
-            bat "docker image prune -f"
-            bat "docker volume prune -f"
-            bat "docker container prune -f"
-            bat "docker system prune -a -f"
-            bat "docker builder prune -a -f"
+            bat "docker image prune"
+//             bat "docker volume prune -f"
+//             bat "docker container prune -f"
+//             bat "docker system prune -a -f"
+//             bat "docker builder prune -a -f"
         }
     }
 }
