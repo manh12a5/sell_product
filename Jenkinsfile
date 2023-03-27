@@ -29,9 +29,6 @@ pipeline {
                 // Run docker-compose
                 bat 'docker-compose -f docker-compose.yml build'
                 bat 'docker-compose -f docker-compose.yml up -d'
-
-                // Remove none images
-//                 bat 'docker image prune'
             }
         }
     }
@@ -39,6 +36,8 @@ pipeline {
     post {
         always {
 //             junit 'build/test-results/test/*.xml'
+
+            // Remove old and unused Docker
             bat "docker image prune -f"
 //             bat "docker volume prune -f"
 //             bat "docker container prune -f"
