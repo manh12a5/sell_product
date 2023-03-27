@@ -15,9 +15,9 @@ services:
     env_file:
       - ./properties.env
   sell_product-docker-container:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: 0398927895/sell_product-docker:latest #0398927895/sell_product-docker:v1.0.0
     container_name: sell_product-docker-container
     ports:
