@@ -1,9 +1,9 @@
 pipeline {
     agent any
-        tools {
-            gradle 'Gradle 6.8'
-            jdk 'JDK8'
-        }
+    tools {
+        gradle 'Gradle 6.8'
+        jdk 'JDK8'
+    }
 
     stages {
         stage('Clean') {
@@ -20,11 +20,6 @@ pipeline {
             steps {
                 bat 'gradle build'
             }
-        }
-        stage('Copy env file') {
-             steps {
-                bat 'cp .env ${WORKSPACE}'
-             }
         }
         stage('Docker Build') {
             steps {
