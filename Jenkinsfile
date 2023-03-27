@@ -21,8 +21,16 @@ pipeline {
                 bat 'gradle build'
             }
         }
+        stage('Copy env file') {
+             steps {
+                bat 'cp .env ${WORKSPACE}'
+             }
+        }
         stage('Docker Build') {
             steps {
+                withCredentials([file(credentialsId: 'envfile', variable: 'mySecretEnvFile')]){
+                    sh 'cp $mySecretEnvFile $WORKSPACE'
+                }
                 // Build docker image
 //              bat 'docker build -t 0398927895/sell_product-docker:latest .'
 
