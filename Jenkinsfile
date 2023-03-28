@@ -23,8 +23,10 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                withCredentials([file(credentialsId: 'env', variable: 'mySecretEnvFile')]){
-                    bat 'copy $mySecretEnvFile $WORKSPACE'
+                script {
+                    withCredentials([file(credentialsId: 'env', variable: 'mySecretEnvFile')]){
+                        bat 'copy $mySecretEnvFile $WORKSPACE'
+                    }
                 }
                 // Build docker image
 //              bat 'docker build -t 0398927895/sell_product-docker:latest .'
