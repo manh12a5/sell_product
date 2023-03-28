@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'env', variable: 'mySecretEnvFile')]) {
-                        bat 'copy \$mySecretEnvFile $WORKSPACE'
+                        bat 'copy %mySecretEnvFile% %WORKSPACE%'
                     }
                 }
                 // Build docker image
