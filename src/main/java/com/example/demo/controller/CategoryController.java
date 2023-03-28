@@ -29,16 +29,17 @@ public class CategoryController {
         modelAndView.addObject("categories", categoryServiceImp.findAll());
         return modelAndView;
     }
+
     @GetMapping("/create-cate")
     public ModelAndView showFormCreateCate(){
-        ModelAndView modelAndView = new ModelAndView("/category/create");
+        ModelAndView modelAndView = new ModelAndView("category/create");
         modelAndView.addObject("category", new Category());
         return modelAndView;
     }
 
     @PostMapping("/create-cate")
     public ModelAndView createCate(@ModelAttribute Category category){
-        ModelAndView mav = new ModelAndView("/category/create");
+        ModelAndView mav = new ModelAndView("category/create");
         MultipartFile multipartFile = category.getAvatar();
         String fileName = multipartFile.getOriginalFilename();
         String fileUpload = environment.getProperty("upload.path");
@@ -59,7 +60,7 @@ public class CategoryController {
     public ModelAndView showEditForm(@PathVariable Long id){
         Category category = categoryServiceImp.findById(id);
         if(category != null) {
-            ModelAndView modelAndView = new ModelAndView("/category/edit");
+            ModelAndView modelAndView = new ModelAndView("category/edit");
             modelAndView.addObject("category", category);
             return modelAndView;
 
@@ -70,7 +71,7 @@ public class CategoryController {
 
     @PostMapping("/edit-cate/{id}")
     public ModelAndView updateCate(@ModelAttribute("category") Category category) {
-        ModelAndView modelAndView = new ModelAndView("/category/edit");
+        ModelAndView modelAndView = new ModelAndView("category/edit");
         MultipartFile multipartFile = category.getAvatar();
         String fileName = multipartFile.getOriginalFilename();
         String fileUpload = environment.getProperty("upload.path");
@@ -91,7 +92,7 @@ public class CategoryController {
     public ModelAndView showDeleteForm(@PathVariable Long id){
         Category category = categoryServiceImp.findById(id);
         if(category != null) {
-            ModelAndView modelAndView = new ModelAndView("/category/delete");
+            ModelAndView modelAndView = new ModelAndView("category/delete");
             modelAndView.addObject("category", category);
             return modelAndView;
 
