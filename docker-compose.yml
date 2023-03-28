@@ -7,7 +7,7 @@ services:
     ports:
       - 3310:3306
     volumes:
-#      - C:/db/:/var/lib/mysql
+      #      - C:/db/:/var/lib/mysql
       - mysql-springboot-data:/var/lib/mysql
       - mysql-springboot-config-deamond:/etc/mysql/conf.d
     networks:
