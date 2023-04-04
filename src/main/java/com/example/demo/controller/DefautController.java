@@ -43,9 +43,6 @@ public class DefautController {
     @Autowired
     private IAppUserWishListService appUserWishListService;
 
-    @Value("${spring.web.resources.locations:C:/SAVONET/FIle code/sell_product/fileImage/}")
-    private String urlImage;
-
     @Autowired
     private IWarehouseService warehouseService;
 
@@ -55,7 +52,6 @@ public class DefautController {
 
         modelAndView.addObject("categories", categoryServiceImp.findAll());
         modelAndView.addObject("top5products", productService.findTop5ByOrderByPriceDesc(pageable));
-        modelAndView.addObject("urlImage", urlImage);
         return modelAndView;
     }
 

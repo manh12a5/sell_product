@@ -33,7 +33,6 @@ spring:
   web:
     resources:
       static-locations: file:///${UPLOAD_PATH}, classpath:/static
-      locations: ${UPLOAD_PATH}
   main:
     allow-circular-references: true
 
