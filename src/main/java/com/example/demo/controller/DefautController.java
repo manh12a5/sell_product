@@ -9,6 +9,7 @@ import com.example.demo.service.product.IProductService;
 import com.example.demo.service.warehouse.IWarehouseService;
 import com.example.demo.service.wishList.IWishListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -42,6 +43,9 @@ public class DefautController {
     @Autowired
     private IAppUserWishListService appUserWishListService;
 
+    @Value("${spring.web.resources.static-locations:C:/SAVONET/FIle code/sell_product/fileImage/}")
+    private String urlImage;
+
     @Autowired
     private IWarehouseService warehouseService;
 
@@ -51,6 +55,7 @@ public class DefautController {
 
         modelAndView.addObject("categories", categoryServiceImp.findAll());
         modelAndView.addObject("top5products", productService.findTop5ByOrderByPriceDesc(pageable));
+        modelAndView.addObject("urlImage", urlImage);
         return modelAndView;
     }
 
