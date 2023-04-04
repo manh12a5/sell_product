@@ -32,7 +32,8 @@ spring:
       max-request-size: 5MB
   web:
     resources:
-      static-locations: file:///${UPLOAD_PATH}, classpath:/static
+      static-locations: ${UPLOAD_PATH}
+#        static-locations: file:///${UPLOAD_PATH}, classpath:/static
   main:
     allow-circular-references: true
 
