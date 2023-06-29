@@ -48,6 +48,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
     implementation group: 'org.hibernate', name: 'hibernate-core', ext: 'pom'
     implementation group: 'com.paypal.sdk', name: 'rest-api-sdk', version: '1.14.0'
+    implementation group: 'software.amazon.awssdk', name: 's3', version: '2.20.94'
 
 }
 

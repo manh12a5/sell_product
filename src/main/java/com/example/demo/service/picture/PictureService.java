@@ -2,6 +2,8 @@ package com.example.demo.service.picture;
 
 import com.example.demo.model.Picture;
 import com.example.demo.repository.PictureRepository;
+import com.example.demo.s3.S3Bucket;
+import com.example.demo.service.s3.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,10 @@ public class PictureService implements IPictureService {
     private PictureRepository pictureRepository;
 
     @Autowired
-    private Environment environment;
+    private S3Service s3Service;
+
+    @Autowired
+    private S3Bucket s3Bucket;
 
     @Override
     public List<Picture> findAll() {
@@ -54,10 +59,9 @@ public class PictureService implements IPictureService {
         if (multipartFileList != null && !multipartFileList.isEmpty()) {
             for (int i = 0; i < multipartFileList.size(); i++) {
                 String fileName = multipartFileList.get(i).getOriginalFilename();
-                String fileUpload = environment.getProperty("upload.path");
-                String newFile = fileUpload + fileName;
                 try {
-                    FileCopyUtils.copy(multipartFileList.get(i).getBytes(), new File(newFile));
+                    byte[] bytes = multipartFileList.get(i).getBytes();
+                    s3Service.putS3Object(s3Bucket.getCustomer(), fileName, bytes);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

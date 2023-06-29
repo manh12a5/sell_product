@@ -48,3 +48,8 @@ payment:
 
 customs:
   urlServerName: https://8bda-14-160-25-79.ap.ngrok.io
+
+aws:
+  s3:
+    bucket:
+      customer: sell-product
