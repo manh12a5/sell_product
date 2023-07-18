@@ -1,5 +1,6 @@
 package com.example.demo.service.picture;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.example.demo.model.Picture;
 import com.example.demo.repository.PictureRepository;
 import com.example.demo.s3.S3Bucket;
@@ -25,6 +26,9 @@ public class PictureService implements IPictureService {
 
     @Autowired
     private S3Bucket s3Bucket;
+
+    @Autowired
+    private AmazonS3 amazonS3;
 
     @Override
     public List<Picture> findAll() {
@@ -61,7 +65,8 @@ public class PictureService implements IPictureService {
                 String fileName = multipartFileList.get(i).getOriginalFilename();
                 try {
                     byte[] bytes = multipartFileList.get(i).getBytes();
-                    s3Service.putS3Object(s3Bucket.getCustomer(), fileName, bytes);
+//                    s3Service.putS3Object(s3Bucket.getCustomer(), fileName, bytes);
+                    amazonS3.putObject(s3Bucket.getCustomer(), fileName, multipartFileList.get(i).getName());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
