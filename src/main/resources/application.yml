@@ -51,7 +51,7 @@ customs:
 
 aws:
   s3:
-    access-key: ${aws_access_key_id}
-    secret-access-key: ${aws_access_key_id}
+    access-key: ${AWS_ACCESS_KEY_ID}
+    secret-access-key: ${AWS_SECRET_ACCESS_KEY}
     bucket:
       customer: sell-product
