@@ -65,8 +65,7 @@ public class PictureService implements IPictureService {
                 String fileName = multipartFileList.get(i).getOriginalFilename();
                 try {
                     byte[] bytes = multipartFileList.get(i).getBytes();
-//                    s3Service.putS3Object(s3Bucket.getCustomer(), fileName, bytes);
-                    amazonS3.putObject(s3Bucket.getCustomer(), fileName, multipartFileList.get(i).getName());
+                    s3Service.putS3Object(s3Bucket.getCustomer(), fileName, bytes);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
