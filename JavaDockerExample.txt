@@ -60,3 +60,26 @@ Build Docker Compose file:
 
 docker rm -f mysql-springboot-container springboot-docker-container
 docker-compose -f docker-compose.dev.yml up -d --build
+
+
+Access s3 bucket
+{
+  "Id": "Policy1234567890123",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1234567890123",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::<DOC-EXAMPLE-BUCKET>",
+        "arn:aws:s3:::<DOC-EXAMPLE-BUCKET>/*"
+      ],
+      "Principal": "*"
+    }
+  ]
+}

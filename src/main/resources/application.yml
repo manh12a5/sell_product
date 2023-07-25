@@ -51,6 +51,7 @@ customs:
 
 aws:
   s3:
+    url: https://sell-product.s3.ap-southeast-1.amazonaws.com
     key:
       access-key: ${AWS_ACCESS_KEY_ID}
       secret-access-key: ${AWS_SECRET_ACCESS_KEY}

@@ -1,18 +1,16 @@
 package com.example.demo.service.picture;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.example.demo.model.Picture;
 import com.example.demo.repository.PictureRepository;
 import com.example.demo.s3.S3Bucket;
 import com.example.demo.service.s3.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +24,6 @@ public class PictureService implements IPictureService {
 
     @Autowired
     private S3Bucket s3Bucket;
-
-    @Autowired
-    private AmazonS3 amazonS3;
 
     @Override
     public List<Picture> findAll() {
@@ -48,6 +43,13 @@ public class PictureService implements IPictureService {
     @Override
     public void remove(Long id) {
         pictureRepository.deleteById(id);
+    }
+
+    @Override
+    public byte[] getPictures(Long id) throws IOException {
+        Picture picture = this.findById(id);
+
+        return s3Service.getS3Object(s3Bucket.getCustomer(), picture.getMainPicture());
     }
 
     @Override

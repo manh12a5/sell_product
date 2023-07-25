@@ -14,7 +14,9 @@ import com.example.demo.service.comment.ICommentService;
 import com.example.demo.service.login.IAppUserService;
 import com.example.demo.service.product.IProductService;
 import com.example.demo.service.warehouse.IWarehouseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,7 +28,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
+
+    @Value("${aws.s3.url:https://sell-product.s3.ap-southeast-1.amazonaws.com}")
+    private String URL_S3;
 
     @Autowired
     private IProductService productService;
@@ -126,6 +132,7 @@ public class ProductController {
         List<Comment> comments = commentService.getAllCommentByProductIdDESC(product.getId());
         List<WarehouseForm> warehouseForms = warehouseService.findWarehouseFormByProductId(product.getId());
 
+        modelAndView.addObject("urlS3", URL_S3);
         modelAndView.addObject("product", product);
         modelAndView.addObject("productId", id);
         modelAndView.addObject("comments", comments);
