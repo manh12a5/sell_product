@@ -10,9 +10,7 @@ services:
       #      - C:/db/:/var/lib/mysql
       - mysql-springboot-data:/var/lib/mysql
       - mysql-springboot-config-deamond:/etc/mysql/conf.d
-    environment:
-      - AWS_ACCESS_KEY_ID=AKIA5OVXSYGRMIM6POEK
-      - AWS_SECRET_ACCESS_KEY=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
+      - C:/Users/DTN/.aws:/root/.aws:ro
     networks:
       - backend
     env_file:
