@@ -6,6 +6,7 @@ import com.example.demo.model.AppRole;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Cart;
 import com.example.demo.model.ConfirmationToken;
+import com.example.demo.object.ProviderEnum;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.ConfirmationTokenRepository;
@@ -155,6 +156,11 @@ public class AppUserService implements IAppUserService {
             String encodePassword = bCryptPasswordEncoder.encode(appUser.getPassword());
             appUser.setPassword(encodePassword);
             appUser.setAppRole(AppRole.USER);
+
+            if (appUser.getAuthProvider() == null ||
+                    !appUser.getAuthProvider().equals(ProviderEnum.FACEBOOK)) {
+                appUser.setAuthProvider(ProviderEnum.LOCAL);
+            }
 
             appUserRepository.save(appUser);
 

@@ -50,6 +50,8 @@ dependencies {
     implementation group: 'com.paypal.sdk', name: 'rest-api-sdk', version: '1.14.0'
     implementation group: 'software.amazon.awssdk', name: 's3', version: '2.20.94'
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.506'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client'
+
 
 }
 

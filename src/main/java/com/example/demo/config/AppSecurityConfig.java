@@ -1,6 +1,8 @@
 package com.example.demo.config;
 
+import com.example.demo.service.oAuth2.CustomOAuth2Service;
 import com.example.demo.service.login.IAppUserService;
+import com.example.demo.service.oAuth2.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +25,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     private final static String[] URL_PERMIT_ALL = {
             "/", "/categories/**", "/products/**", "/cart/**",
-            "/checkout/**", "/ajax/**", "/wishlist/**"
+            "/checkout/**", "/ajax/**", "/wishlist/**", "/oauth2/**"
     };
 
     private final static String[] URL_PERMIT_ADMIN = {
@@ -40,6 +42,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private CustomOAuth2Service customOAuth2Service;
+
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -51,7 +59,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .antMatchers(HttpMethod.POST ,"/products/detail/{id}")
                 .authenticated()
                 .and()
-                .formLogin().successHandler(customizeSuccessHandle).loginPage("/login").permitAll().and()
+                .formLogin().successHandler(customizeSuccessHandle).loginPage("/login").permitAll()
+                .and()
+                .oauth2Login().loginPage("/login").userInfoEndpoint().userService(customOAuth2Service)
+                    .and().successHandler(oAuth2LoginSuccessHandler)
+                .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).and()
                 .exceptionHandling().accessDeniedPage("/403");
     }

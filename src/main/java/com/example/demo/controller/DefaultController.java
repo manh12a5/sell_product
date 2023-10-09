@@ -20,7 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("")
-public class DefautController {
+public class DefaultController {
+
+    @Value("${aws.s3.url:https://sell-product.s3.ap-southeast-1.amazonaws.com}")
+    private String URL_S3;
 
     @Autowired
     private ICategoryService categoryServiceImp;
@@ -50,6 +53,7 @@ public class DefautController {
     public ModelAndView home(@PageableDefault(size = 5) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("view/index");
 
+        modelAndView.addObject("urlS3", URL_S3);
         modelAndView.addObject("categories", categoryServiceImp.findAll());
         modelAndView.addObject("top5products", productService.findTop5ByOrderByPriceDesc(pageable));
         return modelAndView;

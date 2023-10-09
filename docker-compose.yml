@@ -10,7 +10,6 @@ services:
       #      - C:/db/:/var/lib/mysql
       - mysql-springboot-data:/var/lib/mysql
       - mysql-springboot-config-deamond:/etc/mysql/conf.d
-      - C:/Users/DTN/.aws:/root/.aws:ro
     networks:
       - backend
     env_file:

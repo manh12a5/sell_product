@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.object.ProviderEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +39,9 @@ public class AppUser implements UserDetails {
 
     @Column(name = "created_on", nullable = true, insertable = false, updatable = false)
     private Timestamp createOn;
+
+    @Enumerated(EnumType.STRING)
+    private ProviderEnum authProvider;
 
     @JsonIgnore
     @OneToMany(mappedBy = "appUserWishListId.appUser", fetch = FetchType.LAZY)

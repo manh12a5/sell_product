@@ -35,6 +35,16 @@ spring:
       static-locations: file:///${UPLOAD_PATH}, classpath:/static
   main:
     allow-circular-references: true
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 650874057157882
+            client-secret: bc742d9ec7bc6e86e726a2476fe27e8e
+            scope:
+              - email
+              - public_profile
 
 custom:
   scheduler:
