@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
+                cleanWs()
                 bat 'gradle clean'
             }
         }
