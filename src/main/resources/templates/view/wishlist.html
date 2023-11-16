@@ -79,7 +79,7 @@
                                 <input type="hidden" th:value="${wishlist.product.id}" name="productId">
                                 <td class="thumbnail-img">
                                     <a th:href="@{/products/view/{id}(id=${wishlist.product.id})}">
-                                        <img class="img-fluid" th:src="@{|/${wishlist.product.picture.mainPicture}|}" alt=""/>
+                                        <img class="img-fluid" th:src="@{|${urlS3}/${wishlist.product.picture.mainPicture}|}" alt=""/>
                                     </a>
                                 </td>
                                 <td class="name-pr">

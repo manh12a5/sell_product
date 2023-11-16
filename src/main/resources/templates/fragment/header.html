@@ -68,7 +68,7 @@
                         </li>
                         <th:block sec:authorize="isAuthenticated()">
                             <li>
-                                <a href="/login/profile" sec:authentication="principal.username"></a>
+                                <a href="/login/profile" sec:authentication="principal.email"></a>
                             </li>
                             <th:block sec:authorize="hasAuthority('ADMIN')">
                                 <li>

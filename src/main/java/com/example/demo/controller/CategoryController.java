@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Category;
+import com.example.demo.s3.S3Bucket;
 import com.example.demo.service.category.CategoryServiceImp;
+import com.example.demo.service.s3.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -23,6 +26,15 @@ public class CategoryController {
     @Autowired
     Environment environment;
 
+    @Autowired
+    private S3Service s3Service;
+
+    @Autowired
+    private S3Bucket s3Bucket;
+
+    @Value("${aws.s3.url:https://sell-product.s3.ap-southeast-1.amazonaws.com}")
+    private String URL_S3;
+
     @GetMapping("")
     public ModelAndView showCategories(){
         ModelAndView modelAndView = new ModelAndView("category/list");
@@ -38,19 +50,16 @@ public class CategoryController {
     }
 
     @PostMapping("/create-cate")
-    public ModelAndView createCate(@ModelAttribute Category category){
+    public ModelAndView createCate(@ModelAttribute Category category) throws IOException {
         ModelAndView mav = new ModelAndView("category/create");
         MultipartFile multipartFile = category.getAvatar();
         String fileName = multipartFile.getOriginalFilename();
-        String fileUpload = environment.getProperty("upload.path");
-        String newFile = fileUpload + fileName;
-        try {
-            FileCopyUtils.copy(multipartFile.getBytes(), new File(newFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        s3Service.putS3Object(s3Bucket.getCustomer(), fileName, multipartFile.getBytes());
+
         category.setImage(fileName);
+        category.setName(category.getName());
         categoryServiceImp.save(category);
+
         mav.addObject("category", category);
         mav.addObject("message", "New customer created successfully");
         return mav;
@@ -69,21 +78,23 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("/edit-cate/{id}")
-    public ModelAndView updateCate(@ModelAttribute("category") Category category) {
+    @PostMapping("/edit-cate")
+    public ModelAndView updateCate(@ModelAttribute("category") Category category) throws IOException {
         ModelAndView modelAndView = new ModelAndView("category/edit");
-        MultipartFile multipartFile = category.getAvatar();
-        String fileName = multipartFile.getOriginalFilename();
-        String fileUpload = environment.getProperty("upload.path");
-        String newFile = fileUpload + fileName;
-        try {
-            FileCopyUtils.copy(multipartFile.getBytes(), new File(newFile));
-        } catch (IOException e) {
-            e.printStackTrace();
+        Category c = categoryServiceImp.findById(category.getId());
+        if (category.getAvatar() != null) {
+            MultipartFile multipartFile = category.getAvatar();
+            String fileName = multipartFile.getOriginalFilename();
+            s3Service.putS3Object(s3Bucket.getCustomer(), fileName, multipartFile.getBytes());
+
+            c.setImage(fileName);
         }
-        category.setImage(fileName);
-        categoryServiceImp.save(category);
-        modelAndView.addObject("category", category);
+        if (category.getName() != null && !category.getName().isEmpty()) {
+            c.setName(category.getName());
+        }
+
+        categoryServiceImp.save(c);
+        modelAndView.addObject("category", c);
         modelAndView.addObject("message", "Category updated successfully");
         return modelAndView;
     }

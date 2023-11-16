@@ -153,8 +153,10 @@ public class AppUserService implements IAppUserService {
         AppUser user = appUserRepository.findByEmail(appUser.getEmail())
                 .orElse(null);
         if (user == null) {
-            String encodePassword = bCryptPasswordEncoder.encode(appUser.getPassword());
-            appUser.setPassword(encodePassword);
+            if (appUser.getPassword() != null) {
+                String encodePassword = bCryptPasswordEncoder.encode(appUser.getPassword());
+                appUser.setPassword(encodePassword);
+            }
             appUser.setAppRole(AppRole.USER);
 
             if (appUser.getAuthProvider() == null ||
@@ -175,28 +177,31 @@ public class AppUserService implements IAppUserService {
             }
         }
 
-        ConfirmationToken confirmationToken = confirmationTokenRepository.findByAppUserId(appUser.getId())
-                .orElse(new ConfirmationToken());
+        if (appUser.getAuthProvider().equals(ProviderEnum.LOCAL)) {
+            ConfirmationToken confirmationToken = confirmationTokenRepository.findByAppUserId(appUser.getId())
+                    .orElse(new ConfirmationToken());
 
-        String token = UUID.randomUUID().toString();
-        if (confirmationToken.getAppUser() == null) {
-            confirmationToken.setAppUser(appUser);
+            String token = UUID.randomUUID().toString();
+            if (confirmationToken.getAppUser() == null) {
+                confirmationToken.setAppUser(appUser);
+            }
+            confirmationToken.setToken(token);
+            confirmationToken.setCreatedTime(LocalDateTime.now());
+            confirmationToken.setExpiredTime(LocalDateTime.now().plusMinutes(15));
+
+            confirmationTokenRepository.save(confirmationToken);
+
+            String url = applicationUrl("register", token, request);
+            Map<String, Object> templateAttributes = new LinkedHashMap<>();
+            templateAttributes.put("name", appUser.getLastName());
+            templateAttributes.put("url", url);
+
+            emailSender.send(appUser.getEmail(), templateAttributes,
+                    "email/confirmRegistration", "Confirm your email");
+
+            log.info("Confirmation Token is: {}", token);
         }
-        confirmationToken.setToken(token);
-        confirmationToken.setCreatedTime(LocalDateTime.now());
-        confirmationToken.setExpiredTime(LocalDateTime.now().plusMinutes(15));
 
-        confirmationTokenRepository.save(confirmationToken);
-
-        String url = applicationUrl("register", token, request);
-        Map<String, Object> templateAttributes = new LinkedHashMap<>();
-        templateAttributes.put("name", appUser.getLastName());
-        templateAttributes.put("url", url);
-
-        emailSender.send(appUser.getEmail(), templateAttributes,
-                "email/confirmRegistration", "Confirm your email");
-
-        log.info("Confirmation Token is: {}", token);
         return "Saved user";
     }
 
