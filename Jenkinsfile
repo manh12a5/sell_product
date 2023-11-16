@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                cleanWs()
+                deleteDir()
                 bat 'gradle clean'
             }
         }
